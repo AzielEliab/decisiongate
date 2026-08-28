@@ -259,8 +259,19 @@ export default {
       const asset = dims.asset || "decisiongate-0.1.0.tar.gz";
       dims.asset = asset;
       await increment(env, dims);
-      const hosted = new URL("/" + asset, request.url);
-      return redirect(hosted.href);
+      if (!env.ASSETS) {
+        return json({ error: "assets binding missing" }, 500);
+      }
+      const assetUrl = new URL("/" + asset, request.url);
+      const assetRes = await env.ASSETS.fetch(new Request(assetUrl, { method: "GET" }));
+      if (!assetRes.ok) {
+        return json({ error: "asset not hosted", asset, status: assetRes.status }, 404);
+      }
+      const headers = new Headers(assetRes.headers);
+      headers.set("Content-Type", "application/gzip");
+      headers.set("Content-Disposition", 'attachment; filename="' + asset.replaceAll('"', "") + '"');
+      for (const [k, v] of Object.entries(corsHeaders())) headers.set(k, v);
+      return new Response(assetRes.body, { status: 200, headers });
     }
 
     return json({ error: "not found" }, 404);
