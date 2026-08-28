@@ -93,3 +93,78 @@ def test_cli_check_json_lineage(capsys) -> None:
         "Integrity",
         "Responsibility",
     ]
+
+
+def test_help_lists_ui_and_version() -> None:
+    from decisiongate.cli import _build_parser
+
+    text = _build_parser().format_help()
+    assert "ui" in text
+    assert "version" in text
+    assert "wrap" in text
+    assert "127.0.0.1:8791" in text or "decisiongate ui" in text
+
+
+def test_wrap_failing_statement_does_not_run_dummy(tmp_path, capsys) -> None:
+    import sys
+
+    marker = tmp_path / "ran.txt"
+    dummy = [sys.executable, "-c", f"open({str(marker)!r}, 'w').write('ran')"]
+    code = main(["wrap", "--statement", "maybe stuff", "--", *dummy])
+    captured = capsys.readouterr()
+    assert code != 0
+    assert not marker.exists()
+    blob = captured.out + captured.err
+    assert "refused" in blob.lower() or "REVISE" in blob or "BLOCK" in blob
+
+
+def test_wrap_pass_runs_dummy(tmp_path, capsys) -> None:
+    import sys
+
+    marker = tmp_path / "ran.txt"
+    dummy = [sys.executable, "-c", f"open({str(marker)!r}, 'w').write('ok')"]
+    code = main(
+        [
+            "wrap",
+            "--statement",
+            COMPLETE_STATEMENT,
+            "--evidence",
+            "Whitepaper dated July 2026 names five sequential gates.",
+            "--impact-pos",
+            "Authors get a named scrutiny path before acting.",
+            "--impact-neg",
+            "Vague drafts take longer because they must be rewritten.",
+            "--values",
+            "Clarity without force",
+            "--accountable",
+            "Aziel Eliab",
+            "--",
+            *dummy,
+        ]
+    )
+    capsys.readouterr()
+    assert code == 0
+    assert marker.read_text(encoding="utf-8") == "ok"
+
+
+def test_wrap_missing_command_nonzero(capsys) -> None:
+    code = main(
+        [
+            "wrap",
+            "--statement",
+            COMPLETE_STATEMENT,
+            "--evidence",
+            "A fact.",
+            "--impact-pos",
+            "A benefit.",
+            "--impact-neg",
+            "A cost.",
+            "--values",
+            "clarity",
+            "--accountable",
+            "Aziel Eliab",
+        ]
+    )
+    err = capsys.readouterr().err
+    assert code == 2
+    assert "CMD" in err or "command" in err.lower()

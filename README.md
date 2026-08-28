@@ -14,11 +14,41 @@ How to contribute: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 **Forks are welcome and always allowed.**
 
+## Quick start
+
+```bash
+python -m venv .venv && source .venv/bin/activate && pip install -e ".[dev]"
+decisiongate ui
+```
+
+Open http://127.0.0.1:8791 (loopback only). No CDN, no telemetry.
+
+Counted download: [https://decisiongate-download-tracker.vibelock.workers.dev/](https://decisiongate-download-tracker.vibelock.workers.dev/)
+
+Pre-execution wrap (runs `CMD` only if all five gates PASS):
+
+```bash
+decisiongate wrap --statement "..." --evidence "..." --impact-pos "..." --impact-neg "..." --values "..." --accountable "Name" -- -- CMD
+```
+
+
+
 This tree is a standalone product. It is not ForgeReceipts. It is not
 ZionPattern Solver. It is not merged into those trees.
 
 Counted downloads (number on the button, no user reporting):
 [https://decisiongate-download-tracker.vibelock.workers.dev/](https://decisiongate-download-tracker.vibelock.workers.dev/)
+
+## iPhone & Android
+
+A local-first Flutter client lives in [`mobile/`](mobile/). Open that
+folder in Android Studio or Xcode through Flutter (`flutter create .`
+first if `android/` / `ios/` still hold the skeleton READMEs). Five-gate
+form, sequential PASS / REVISE / BLOCK, motto on screen.
+
+Counted desktop download: [https://decisiongate-download-tracker.vibelock.workers.dev/](https://decisiongate-download-tracker.vibelock.workers.dev/)
+
+Forks are welcome and always allowed.
 
 ---
 
