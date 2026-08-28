@@ -141,6 +141,33 @@ Isolated download counter, undeployed until a real KV id replaces `REPLACE_ME`.
 See [workers/download-tracker/README.md](workers/download-tracker/README.md).
 Do not deploy wrangler from this tree until then.
 
+## Use with Grok, ChatGPT, Venice
+
+Live HTTPS runtime on the existing download-tracker Worker. `GET /download`, live count, and KV isolation are unchanged. `/v1` calls do **not** increment DOWNLOADS. Hosted API does **not** include `wrap` (no remote command execution).
+
+OpenAPI (paste into ChatGPT GPT Actions; import for Venice custom HTTP; Grok/xAI custom tool):
+
+```
+https://decisiongate-download-tracker.vibelock.workers.dev/openapi.json
+```
+
+Setup notes: [https://decisiongate-download-tracker.vibelock.workers.dev/ai](https://decisiongate-download-tracker.vibelock.workers.dev/ai)
+
+MCP catalog (ships separately): `https://aziel-runtime.vibelock.workers.dev/mcp`
+
+```bash
+curl -sS -X POST https://decisiongate-download-tracker.vibelock.workers.dev/v1/check \
+  -H "content-type: application/json" \
+  -d '{
+    "statement": "Release DecisionGATE 0.1.0 as a standalone Python package with Apache-2.0 licensing on GitHub this month.",
+    "evidence": ["Whitepaper dated July 2026 names five sequential gates."],
+    "impact_pos": ["Authors get a named scrutiny path before acting."],
+    "impact_neg": ["Vague drafts take longer because they must be rewritten."],
+    "values": ["Clarity without force"],
+    "accountable": "Aziel Eliab"
+  }'
+```
+
 ## License
 
 Apache-2.0. See [LICENSE](LICENSE).
