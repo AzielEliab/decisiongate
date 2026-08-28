@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "decisiongate"
+version = "0.1.0"
+description = "DecisionGATE: a lightweight ethical pre-execution filter. Not predictive, advisory, or prescriptive."
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [{name = "Aziel Eliab"}]
+requires-python = ">=3.10"
+keywords = [
+    "ethics",
+    "filter",
+    "pre-execution",
+    "gates",
+    "scrutiny",
+    "decision",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Sociology",
+    "Intended Audience :: Developers",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4"]
+
+[project.scripts]
+decisiongate = "decisiongate.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/AzielEliab/decisiongate"
+Download = "https://github.com/AzielEliab/decisiongate/releases"
+Issues = "https://github.com/AzielEliab/decisiongate/issues"
+Counted-downloads = "https://decisiongate-download-tracker.vibelock.workers.dev/"
+
+[tool.setuptools.packages.find]
+include = ["decisiongate*"]
+
+[tool.setuptools.package-data]
+decisiongate = ["web/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q"

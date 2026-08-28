@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DecisionGATE — pre-execution filter</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="tag">DecisionGATE · v0.1.0 · loopback · not advice</div>
+    <h1>DecisionGATE</h1>
+    <p class="motto">Freedom without clarity is chaos. Clarity without force is wisdom.</p>
+    <p class="lede">
+      Lightweight ethical filter. Not predictive, advisory, or prescriptive.
+      No action should pass unless it survives structured scrutiny.
+      Five sequential gates. First failure stops the chain.
+    </p>
+  </header>
+
+  <form id="proposal-form" autocomplete="off">
+    <fieldset>
+      <legend>Proposal</legend>
+
+      <label for="statement">
+        <span class="kicker">Statement</span>
+        Concrete, unambiguous action. Vague or shifting fails Definition.
+      </label>
+      <textarea id="statement" name="statement" rows="3" placeholder="Release DecisionGATE 0.1.0 as a standalone Python package under Apache-2.0 on GitHub this month."></textarea>
+
+      <label for="evidence">
+        <span class="kicker">Evidence</span>
+        Facts, data, observations. One per line. Empty fails Evidence.
+      </label>
+      <textarea id="evidence" name="evidence" rows="3" placeholder="Package builds with stdlib only.&#10;Whitepaper dated July 2026 specifies five gates."></textarea>
+
+      <div class="pair">
+        <div>
+          <label for="impacts_positive">
+            <span class="kicker">Positive impacts</span>
+            Who or what is helped. One per line.
+          </label>
+          <textarea id="impacts_positive" name="impacts_positive" rows="3" placeholder="Authors get a named scrutiny path."></textarea>
+        </div>
+        <div>
+          <label for="impacts_negative">
+            <span class="kicker">Negative impacts</span>
+            Who or what is harmed or burdened. One per line.
+          </label>
+          <textarea id="impacts_negative" name="impacts_negative" rows="3" placeholder="Vague proposals take longer to rewrite."></textarea>
+        </div>
+      </div>
+
+      <label for="values">
+        <span class="kicker">Values</span>
+        Stated values the proposal must remain consistent with. One per line.
+      </label>
+      <textarea id="values" name="values" rows="2" placeholder="Clarity without force. Named responsibility."></textarea>
+
+      <label for="commitments">
+        <span class="kicker">Commitments</span>
+        Prior commitments. One per line. Optional.
+      </label>
+      <textarea id="commitments" name="commitments" rows="2" placeholder="Apache-2.0. Forks welcome."></textarea>
+
+      <label for="constraints">
+        <span class="kicker">Constraints</span>
+        Hard bounds. One per line. A statement that contradicts a prohibition is BLOCK.
+      </label>
+      <textarea id="constraints" name="constraints" rows="2" placeholder="Do not bind the UI on 0.0.0.0."></textarea>
+
+      <label for="accountable">
+        <span class="kicker">Accountable person</span>
+        One named owner. Blank is BLOCK.
+      </label>
+      <input id="accountable" name="accountable" type="text" placeholder="Aziel Eliab" spellcheck="false">
+    </fieldset>
+
+    <div class="actions">
+      <button type="submit" id="run">Run gates</button>
+      <button type="button" id="export" disabled>Export JSON lineage</button>
+    </div>
+  </form>
+
+  <section class="gates" aria-live="polite">
+    <h2>Gates</h2>
+    <ol id="gate-stack">
+      <li class="gate pending" data-gate="Definition">
+        <div class="lamp" aria-hidden="true"></div>
+        <div class="body">
+          <div class="title"><span class="n">1</span> Definition</div>
+          <p class="state">waiting</p>
+          <p class="feedback">Concrete unambiguous proposal. Vague or shifting → REVISE or BLOCK.</p>
+          <label class="override">
+            <input type="checkbox" data-override="Definition"> Override to REVISE
+          </label>
+          <input type="text" class="note" data-note="Definition" placeholder="Override note (recorded in lineage)" disabled>
+        </div>
+      </li>
+      <li class="gate pending" data-gate="Evidence">
+        <div class="lamp" aria-hidden="true"></div>
+        <div class="body">
+          <div class="title"><span class="n">2</span> Evidence</div>
+          <p class="state">waiting</p>
+          <p class="feedback">Facts, data, observations identified. Ungrounded assertions → REVISE.</p>
+          <label class="override">
+            <input type="checkbox" data-override="Evidence"> Override to REVISE
+          </label>
+          <input type="text" class="note" data-note="Evidence" placeholder="Override note (recorded in lineage)" disabled>
+        </div>
+      </li>
+      <li class="gate pending" data-gate="Impact">
+        <div class="lamp" aria-hidden="true"></div>
+        <div class="body">
+          <div class="title"><span class="n">3</span> Impact</div>
+          <p class="state">waiting</p>
+          <p class="feedback">Who or what is affected, positive AND negative. Hidden impacts → REVISE.</p>
+          <label class="override">
+            <input type="checkbox" data-override="Impact"> Override to REVISE
+          </label>
+          <input type="text" class="note" data-note="Impact" placeholder="Override note (recorded in lineage)" disabled>
+        </div>
+      </li>
+      <li class="gate pending" data-gate="Integrity">
+        <div class="lamp" aria-hidden="true"></div>
+        <div class="body">
+          <div class="title"><span class="n">4</span> Integrity</div>
+          <p class="state">waiting</p>
+          <p class="feedback">Consistent with stated values, prior commitments, constraints. Contradictions → REVISE or BLOCK.</p>
+          <label class="override">
+            <input type="checkbox" data-override="Integrity"> Override to REVISE
+          </label>
+          <input type="text" class="note" data-note="Integrity" placeholder="Override note (recorded in lineage)" disabled>
+        </div>
+      </li>
+      <li class="gate pending" data-gate="Responsibility">
+        <div class="lamp" aria-hidden="true"></div>
+        <div class="body">
+          <div class="title"><span class="n">5</span> Responsibility</div>
+          <p class="state">waiting</p>
+          <p class="feedback">Named accountable owner. Diffuse or absent → BLOCK.</p>
+          <label class="override">
+            <input type="checkbox" data-override="Responsibility"> Override to REVISE
+          </label>
+          <input type="text" class="note" data-note="Responsibility" placeholder="Override note (recorded in lineage)" disabled>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <div id="banner" class="banner idle" role="status">
+    No run yet. Submit a proposal. First failure stops the chain.
+  </div>
+
+  <footer>
+    <p>Apache-2.0 · Aziel Eliab · July 2026 · Bound to 127.0.0.1 · Forks welcome and always allowed.</p>
+    <p class="foot-note">This UI does not advise, predict, or prescribe. It filters.</p>
+  </footer>
+  <script src="/app.js"></script>
+</body>
+</html>

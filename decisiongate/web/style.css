@@ -1,0 +1,223 @@
+/* DecisionGATE local UI. No CDN. Pre-execution filter, not advice. */
+:root {
+  --bg: #0f1419;
+  --panel: #171e27;
+  --ink: #e8edf2;
+  --muted: #8b97a6;
+  --line: #2a3544;
+  --pass: #3dba7a;
+  --pass-dim: #1d4a33;
+  --revise: #e0a13a;
+  --revise-dim: #5a4318;
+  --block: #d4534b;
+  --block-dim: #5a221f;
+  --idle: #3d4a58;
+  --gold: #d4bc6a;
+  --focus: #7aa2d4;
+  font-synthesis: none;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Source Serif 4", "Iowan Old Style", Palatino, "Palatino Linotype", Georgia, serif;
+  line-height: 1.45;
+}
+body {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 2.1rem 1.2rem 4rem;
+}
+.tag {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+h1 {
+  font-size: 2rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  margin: 0.35rem 0 0.25rem;
+}
+.motto {
+  color: var(--gold);
+  font-style: italic;
+  margin: 0 0 0.85rem;
+  font-size: 1.05rem;
+}
+.lede {
+  color: var(--muted);
+  margin: 0 0 1.5rem;
+  max-width: 40rem;
+}
+fieldset {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+  padding: 1.1rem 1.15rem 1.2rem;
+  margin: 0 0 1rem;
+}
+legend {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0 0.4rem;
+}
+label {
+  display: block;
+  font-size: 0.92rem;
+  margin: 0.85rem 0 0.3rem;
+}
+label .kicker {
+  display: block;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.12rem;
+}
+textarea, input[type="text"] {
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #10161d;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.98rem;
+}
+textarea:focus, input[type="text"]:focus {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+.pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+}
+@media (max-width: 640px) {
+  .pair { grid-template-columns: 1fr; }
+}
+.actions {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  margin: 0 0 1.6rem;
+}
+button {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  padding: 0.65rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+  cursor: pointer;
+  font-weight: 650;
+}
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+button#export {
+  background: transparent;
+  color: var(--ink);
+}
+h2 {
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  margin: 0 0 0.7rem;
+}
+#gate-stack {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+.gate {
+  display: grid;
+  grid-template-columns: 1.15rem 1fr;
+  gap: 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  background: var(--panel);
+}
+.lamp {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 50%;
+  margin-top: 0.35rem;
+  background: var(--idle);
+  box-shadow: 0 0 0 3px #1c2430;
+}
+.gate.PASS .lamp { background: var(--pass); box-shadow: 0 0 0 3px var(--pass-dim); }
+.gate.REVISE .lamp { background: var(--revise); box-shadow: 0 0 0 3px var(--revise-dim); }
+.gate.BLOCK .lamp { background: var(--block); box-shadow: 0 0 0 3px var(--block-dim); }
+.gate.skipped { opacity: 0.55; }
+.title {
+  font-weight: 650;
+  letter-spacing: 0.02em;
+}
+.title .n {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color: var(--muted);
+  margin-right: 0.35rem;
+}
+.gate .state {
+  margin: 0.15rem 0 0.25rem;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.gate.PASS .state { color: var(--pass); }
+.gate.REVISE .state { color: var(--revise); }
+.gate.BLOCK .state { color: var(--block); }
+.gate .feedback {
+  margin: 0 0 0.55rem;
+  color: var(--ink);
+  font-size: 0.95rem;
+}
+.override {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 0 0 0.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.override input { width: auto; }
+.gate .note { margin-top: 0.15rem; }
+.banner {
+  margin-top: 1.15rem;
+  padding: 0.9rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  font-weight: 650;
+  letter-spacing: 0.02em;
+}
+.banner.idle { background: var(--panel); color: var(--muted); }
+.banner.PASS { background: var(--pass-dim); color: var(--pass); border-color: var(--pass); }
+.banner.REVISE { background: var(--revise-dim); color: var(--revise); border-color: var(--revise); }
+.banner.BLOCK { background: var(--block-dim); color: var(--block); border-color: var(--block); }
+footer {
+  margin-top: 2rem;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+.foot-note { font-style: italic; }
