@@ -134,6 +134,8 @@ See [workers/download-tracker/README.md](workers/download-tracker/README.md).
 
 ## Use with Grok, ChatGPT, Venice
 
+- Catalog OpenAPI: https://aziel-runtime.vibelock.workers.dev/openapi.json
+
 Live HTTPS runtime on the existing download-tracker Worker. `GET /download`, live count, and KV isolation are unchanged. `/v1` calls do **not** increment DOWNLOADS. Hosted API does **not** include `wrap` (no remote command execution).
 
 OpenAPI (paste into ChatGPT GPT Actions; import for Venice custom HTTP; Grok/xAI custom tool):

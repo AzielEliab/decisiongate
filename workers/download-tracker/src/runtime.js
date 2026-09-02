@@ -4,10 +4,27 @@
  * /v1 calls never touch DOWNLOADS KV.
  */
 const PRODUCT = "decisiongate";
+const EXAMPLE_PAYLOAD = {
+  "statement": "Release the catalog Worker this week.",
+  "evidence": [
+    "OpenAPI 3.1 combined spec."
+  ],
+  "impact_pos": [
+    "One URL for GPT Actions."
+  ],
+  "impact_neg": [
+    "A vague draft takes longer."
+  ],
+  "values": [
+    "Clarity without force"
+  ],
+  "accountable": "Aziel Eliab"
+};
+
 const VERSION = "0.1.0";
 const MOTTO = "Freedom without clarity is chaos. Clarity without force is wisdom.";
 const HOST = "https://decisiongate-download-tracker.vibelock.workers.dev";
-const SKILL = "---\nname: DecisionGATE\ndescription: Use when calling DecisionGATE hosted /v1 or installing the local package. Author Aziel Eliab.\n---\n\n# DecisionGATE\n\nA five-gate check before you act. Not a predictor. Not advice. Not a command. Author: **Aziel Eliab**.\n\n**THIS IS:** a lightweight ethical pre-execution filter (PASS / REVISE / BLOCK).\n\n**THIS IS NOT:** a predictor, a court, a truth score, advice, or a hosted command runner. Hosted `/v1` does not increment downloads or views. wrap is not hosted.\n\nAlways send `User-Agent: Mozilla/5.0`. Cloudflare Workers may 403 an empty agent.\n\n## Call these URLs\n\n- Worker OpenAPI: https://decisiongate-download-tracker.vibelock.workers.dev/openapi.json\n- Catalog OpenAPI: https://aziel-runtime.vibelock.workers.dev/openapi.json\n- MCP: `POST https://aziel-runtime.vibelock.workers.dev/mcp`\n- Live skill (this markdown): `GET https://decisiongate-download-tracker.vibelock.workers.dev/v1/skill`\n\nOps (do **not** increment downloads or views):\n\n- `GET /v1/health` — liveness\n- `GET /v1/skill` — this file\n- Product POSTs listed in OpenAPI\n\nGrok: import OpenAPI as a custom tool. ChatGPT: GPT Actions. Venice: HTTP tools.\n\n## Example\n\n```bash\ncurl -s -A 'Mozilla/5.0' https://decisiongate-download-tracker.vibelock.workers.dev/v1/health\ncurl -s -A 'Mozilla/5.0' https://decisiongate-download-tracker.vibelock.workers.dev/v1/skill\n```\n\n## Local (after one-click install)\n\n```bash\ncurl -fsSL https://decisiongate-download-tracker.vibelock.workers.dev/install.sh | bash\ndecisiongate ui\ndecisiongate doctor\n```\n\nThen open http://127.0.0.1:8791 (this computer only). Import file and Export file both exist. Verify speaks in plain words.\n\nCounted download (gzip HTTP 200, no 302): https://decisiongate-download-tracker.vibelock.workers.dev/download?asset=decisiongate-0.1.0.tar.gz\nGitHub: https://github.com/AzielEliab/decisiongate\n\nPaper: DOI https://doi.org/10.5281/zenodo.21435730 · https://zenodo.org/records/21435730 · Apache-2.0. Forks welcome.\n";
+const SKILL = "---\nname: DecisionGATE\ndescription: Use when calling DecisionGATE hosted /v1 or installing the local package. Author Aziel Eliab.\n---\n\n# DecisionGATE\n\nA five-gate check before you act. Not a predictor. Not advice. Not a command. Author: **Aziel Eliab**.\n\n**THIS IS:** a lightweight ethical pre-execution filter (PASS / REVISE / BLOCK).\n\n**THIS IS NOT:** a predictor, a court, a truth score, advice, or a hosted command runner. Hosted `/v1` does not increment downloads or views. wrap is not hosted.\n\nAlways send `User-Agent: Mozilla/5.0`. Cloudflare Workers may 403 an empty agent.\n\n## Call these URLs\n\n- Worker OpenAPI: https://decisiongate-download-tracker.vibelock.workers.dev/openapi.json\n- Catalog OpenAPI: https://aziel-runtime.vibelock.workers.dev/openapi.json\n- MCP: `POST https://aziel-runtime.vibelock.workers.dev/mcp`\n- Live skill (this markdown): `GET https://decisiongate-download-tracker.vibelock.workers.dev/v1/skill`\n\nOps (do **not** increment downloads or views):\n\n- `GET /v1/health` \u00e2\u0080\u0094 liveness\n- `GET /v1/skill` \u00e2\u0080\u0094 this file\n- Product POSTs listed in OpenAPI\n\nGrok: import OpenAPI as a custom tool. ChatGPT: GPT Actions. Venice: HTTP tools.\n\n## Example\n\n```bash\ncurl -s -A 'Mozilla/5.0' https://decisiongate-download-tracker.vibelock.workers.dev/v1/health\ncurl -s -A 'Mozilla/5.0' https://decisiongate-download-tracker.vibelock.workers.dev/v1/skill\n```\n\n## Local (after one-click install)\n\n```bash\ncurl -fsSL https://decisiongate-download-tracker.vibelock.workers.dev/install.sh | bash\ndecisiongate ui\ndecisiongate doctor\n```\n\nThen open http://127.0.0.1:8791 (this computer only). Import file and Export file both exist. Verify speaks in plain words.\n\nCounted download (gzip HTTP 200, no 302): https://decisiongate-download-tracker.vibelock.workers.dev/download?asset=decisiongate-0.1.0.tar.gz\nGitHub: https://github.com/AzielEliab/decisiongate\n\nPaper: DOI https://doi.org/10.5281/zenodo.21435730 \u00c2\u00b7 https://zenodo.org/records/21435730 \u00c2\u00b7 Apache-2.0. Forks welcome.\n\n## Catalog + local UI\n\nAuthor: **Aziel Eliab**. Honest scope: Five sequential gates on a proposal. Freedom without clarity is chaos.\n\n- Catalog product: https://aziel-runtime.vibelock.workers.dev/p/decisiongate/\n- Catalog OpenAPI: https://aziel-runtime.vibelock.workers.dev/openapi.json\n- Catalog MCP: `POST https://aziel-runtime.vibelock.workers.dev/mcp`\n- This Worker skill: `GET https://decisiongate-download-tracker.vibelock.workers.dev/v1/skill`\n- This Worker OpenAPI: https://decisiongate-download-tracker.vibelock.workers.dev/openapi.json\n- Sample payload: `GET https://decisiongate-download-tracker.vibelock.workers.dev/v1/example`\n\nLocal UI: **Import JSON file** (`type=file`) and **Export JSON**. Then `decisiongate doctor`.\n\nGrok: import catalog or Worker OpenAPI as a custom tool. ChatGPT: GPT Actions. Venice: HTTP tools.\n";
 
 
 const PASS = "PASS";
@@ -261,7 +278,7 @@ function runGates(proposal, overrides) {
 }
 
 function health() {
-  return { ok: true, product: PRODUCT, version: VERSION };
+  return { ok: true, author: "Aziel Eliab", product: PRODUCT, version: VERSION };
 }
 
 function openapiSpec() {
@@ -311,6 +328,7 @@ function openapiSpec() {
     servers: [{ url: HOST }],
     paths: {
       
+            "/v1/example": { get: { operationId: "decisiongateExample", summary: "Sample JSON payload. Does not increment downloads.", responses: { "200": { description: "OK" } } } },
       "/v1/skill": {
         get: {
           operationId: "decisiongate_skill",
@@ -396,6 +414,16 @@ export async function handleRuntimeApi(request, url) {
       headers: { "Content-Type": "text/markdown; charset=utf-8", "Cache-Control": "private, no-store", ...corsHeaders() },
     });
   }
+  if ((path === "/v1/example" || path === "/v1/example/") && (request.method === "GET" || request.method === "HEAD")) {
+    return json({
+      ok: true,
+      product: PRODUCT,
+      author: "Aziel Eliab",
+      example: EXAMPLE_PAYLOAD,
+      note: "Sample payload only. Does not increment downloads.",
+    });
+  }
+
   if (path === "/openapi.json" && request.method === "GET") return json(openapiSpec());
   if (path === "/ai" && request.method === "GET") {
     return new Response(aiHtml(), {
