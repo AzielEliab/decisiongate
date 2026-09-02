@@ -30,7 +30,19 @@ def test_ui_get_root_200_contains_decisiongate() -> None:
             html = resp.read().decode("utf-8")
         assert "DecisionGATE" in html
         assert "Freedom without clarity is chaos" in html
-        assert "cdn" not in html.lower()
+        assert "Import file" in html
+        assert "Export file" in html
+        assert "Verify" in html
+        assert "THIS IS" in html
+        assert "THIS IS NOT" in html
+        assert "Simple" in html
+        assert "cdnjs" not in html.lower()
+        assert "unpkg" not in html.lower()
+        with urllib.request.urlopen(f"http://127.0.0.1:{port}/api/verify", timeout=3) as resp:
+            doctor = json.loads(resp.read().decode("utf-8"))
+        assert doctor["ok"] is True
+        assert doctor["author"] == "Aziel Eliab"
+        assert any("Aziel Eliab" in x for x in doctor["plain"])
         with urllib.request.urlopen(f"http://127.0.0.1:{port}/style.css", timeout=3) as resp:
             css = resp.read().decode("utf-8")
         assert "PASS" in css or "--pass" in css

@@ -29,8 +29,7 @@ Python 3.10+. Core is stdlib only (`dataclasses`, `json`, `http.server`,
 5. **UI binds loopback only** (`127.0.0.1`). Do not listen on `0.0.0.0`.
 6. **Do not merge this product into ForgeReceipts, ZionPattern Solver,
    or any sibling tree.** DecisionGATE is standalone.
-7. **Do not deploy the download tracker** until `wrangler.toml` has a
-   real KV id in place of `REPLACE_ME`.
+7. **Keep `/download` HTTP 200 gzip** (no 302 to GitHub). Isolated KV `DECISIONGATE_DOWNLOADS`.
 8. New behavior needs a test that fails without the change.
 9. Human override of a gate is to **REVISE** with a note recorded in
    lineage. Do not silently convert BLOCK to PASS.

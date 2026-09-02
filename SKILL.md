@@ -5,11 +5,11 @@ description: Use when calling DecisionGATE hosted /v1 or installing the local pa
 
 # DecisionGATE
 
-A lightweight ethical pre-execution filter. Advisory, not predictive. Author: **Aziel Eliab**.
+A five-gate check before you act. Not a predictor. Not advice. Not a command. Author: **Aziel Eliab**.
 
-**THIS IS:** a lightweight ethical pre-execution filter.
+**THIS IS:** a lightweight ethical pre-execution filter (PASS / REVISE / BLOCK).
 
-**THIS IS NOT:** a predictor, a court, or a truth score. Hosted `/v1` does not increment downloads or views.
+**THIS IS NOT:** a predictor, a court, a truth score, advice, or a hosted command runner. Hosted `/v1` does not increment downloads or views. wrap is not hosted.
 
 Always send `User-Agent: Mozilla/5.0`. Cloudflare Workers may 403 an empty agent.
 
@@ -43,7 +43,7 @@ decisiongate ui
 decisiongate doctor
 ```
 
-Then open http://127.0.0.1:8791 (loopback only).
+Then open http://127.0.0.1:8791 (this computer only). Import file and Export file both exist. Verify speaks in plain words.
 
 Counted download (gzip HTTP 200, no 302): https://decisiongate-download-tracker.vibelock.workers.dev/download?asset=decisiongate-0.1.0.tar.gz
 GitHub: https://github.com/AzielEliab/decisiongate

@@ -1,26 +1,31 @@
 # DecisionGATE
 
-A lightweight **ethical pre-execution filter**. Not predictive, advisory, or
-prescriptive. No action should pass unless it survives structured scrutiny.
+A five-gate check before you act. Not a predictor. Not advice. Not a command.
 
 **Author:** Aziel Eliab
 **Date:** July 2026
 **License:** [Apache-2.0](LICENSE)
+**DOI:** [10.5281/zenodo.21435730](https://doi.org/10.5281/zenodo.21435730)
 
 > Freedom without clarity is chaos. Clarity without force is wisdom.
 
-See the spec: [docs/whitepaper.md](docs/whitepaper.md).
-How to contribute: [CONTRIBUTING.md](CONTRIBUTING.md).
-
 **Forks are welcome and always allowed.**
 
-## Quick start
+## Honest scope
 
-```bash
-python -m venv .venv && source .venv/bin/activate && pip install -e ".[dev]"
-decisiongate ui
-```
+**THIS IS:** a local five-step filter (Definition, Evidence, Impact, Integrity, Responsibility). Each step is PASS, REVISE, or BLOCK. The first fail stops the chain.
 
+**THIS IS NOT:** a predictor, a court, a truth score, advice, or a remote command runner. Hosted `wrap` is not offered. PASS means the plan was inspectable — not "you should do it."
+
+This tree is a standalone product. It is not ForgeReceipts. It is not ZionPattern Solver.
+
+## Three steps
+
+1. Tap **Download** on the Worker page (or paste the one-click install line).
+2. Run `decisiongate ui` and open http://127.0.0.1:8791 on this computer.
+3. Type a plan. Tap **Run**. Green means it survived the five checks. That is not "go do it."
+
+Self-check in plain words: `decisiongate doctor` (same as `decisiongate verify`).
 
 ## One-click install
 
@@ -50,75 +55,31 @@ The Worker serves the gzip itself (HTTP 200, no 302 to GitHub).
 
 Isolated counter: Worker `decisiongate-download-tracker`, KV `DECISIONGATE_DOWNLOADS`. `/v1` does not increment downloads.
 
+## Quick start (from a clone)
+
+```bash
+python -m venv .venv && source .venv/bin/activate && pip install -e ".[dev]"
+decisiongate ui
+```
+
 Open http://127.0.0.1:8791 (loopback only). No CDN, no telemetry.
-
-Counted download: [https://decisiongate-download-tracker.vibelock.workers.dev/](https://decisiongate-download-tracker.vibelock.workers.dev/)
-
-Pre-execution wrap (runs `CMD` only if all five gates PASS):
-
-```bash
-decisiongate wrap --statement "..." --evidence "..." --impact-pos "..." --impact-neg "..." --values "..." --accountable "Name" -- -- CMD
-```
-
-
-
-This tree is a standalone product. It is not ForgeReceipts. It is not
-ZionPattern Solver. It is not merged into those trees.
-
-Counted downloads (number on the button, no user reporting):
-[https://decisiongate-download-tracker.vibelock.workers.dev/](https://decisiongate-download-tracker.vibelock.workers.dev/)
-
-## iPhone & Android
-
-A local-first Flutter client lives in [`mobile/`](mobile/). Open that
-folder in Android Studio or Xcode through Flutter (`flutter create .`
-first if `android/` / `ios/` still hold the skeleton READMEs). Five-gate
-form, sequential PASS / REVISE / BLOCK, motto on screen.
-
-Counted desktop download: [https://decisiongate-download-tracker.vibelock.workers.dev/](https://decisiongate-download-tracker.vibelock.workers.dev/)
-
-Forks are welcome and always allowed.
-
----
-
-## What it is
-
-Five sequential gates. A proposal must PASS all five **in order**. The first
-failure stops the chain.
-
-| # | Gate | PASS requires | Failure |
-|---|------|---------------|---------|
-| 1 | Definition | Concrete, unambiguous statement | Vague / shifting → REVISE or BLOCK |
-| 2 | Evidence | Facts, data, or observations | Ungrounded assertions → REVISE |
-| 3 | Impact | Who/what is affected, positive **and** negative | Hidden impacts → REVISE |
-| 4 | Integrity | Consistent with stated values, commitments, constraints | Contradictions → REVISE or BLOCK |
-| 5 | Responsibility | Named accountable owner | Diffuse or absent → BLOCK |
-
-Each gate is `PASS`, `REVISE`, or `BLOCK`. REVISE includes specific feedback.
-BLOCK cannot be remedied without changing the proposal's nature.
-
-Default engine is automatic (deterministic heuristics, no ML). The local UI
-can override a gate to REVISE with a note recorded in lineage.
-
-## Install
-
-Python 3.10+. Stdlib only at runtime.
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -e ".[dev]"
-```
 
 ## CLI
 
 ```bash
 decisiongate version
 decisiongate check --statement "..." --evidence "..." --impact-pos "..." --impact-neg "..." --values "..." --accountable "Name"
-decisiongate ui   # 127.0.0.1:8791
+decisiongate wrap --statement "..." --evidence "..." --impact-pos "..." --impact-neg "..." --values "..." --accountable "Name" -- -- CMD
+decisiongate ui
+decisiongate doctor
+decisiongate verify
+decisiongate import FILE.json
+decisiongate export FILE.json
 ```
 
 `check --json` prints lineage, `final_state`, and optional `blocked_at`.
+`wrap` runs `CMD` only if all five gates PASS (no shell).
+Import and export both write/read JSON files. Doctor/verify speak in plain words.
 
 ## Library
 
@@ -140,10 +101,11 @@ for gate in report.lineage:
 
 ## UI
 
-`decisiongate ui` binds **127.0.0.1:8791** only. Form for the proposal fields.
-Five gates as a vertical stack lighting PASS (green) / REVISE (amber) / BLOCK
-(red) with feedback. Final banner. Export JSON lineage. Self-contained CSS,
-no CDN. Motto on the page.
+`decisiongate ui` binds **127.0.0.1:8791** only.
+
+Simple: type a plan, **Run**, **Import file**, **Export file**, **Verify**.
+Advanced (tucked away): extra fields, override to REVISE, JSON dump.
+Five lights: PASS (green) / REVISE (amber) / BLOCK (red). Self-contained CSS, no CDN.
 
 ## Tests
 
@@ -156,7 +118,7 @@ Offline. No network. Stdlib runtime. pytest is the dev extra.
 
 ## Heuristics (v0.1)
 
-Documented in `decisiongate/gates.py`. Kept small and tested.
+Documented in `decisiongate/gates.py`. Kept small and tested. Not ML.
 
 - **Definition** fails if the statement is empty (BLOCK), shorter than 12 words (REVISE), or contains only the hedges `maybe`, `somehow`, `stuff`, `things` without a verb+object (REVISE).
 - **Evidence** fails if the evidence list is empty (REVISE).
@@ -166,9 +128,9 @@ Documented in `decisiongate/gates.py`. Kept small and tested.
 
 ## Worker
 
-Isolated download counter, undeployed until a real KV id replaces `REPLACE_ME`.
+Isolated download counter. Account `ac575a9b822bea2bed97d0ab73aed238`.
 See [workers/download-tracker/README.md](workers/download-tracker/README.md).
-Do not deploy wrangler from this tree until then.
+`/download` is HTTP 200 gzip. No 302 to GitHub.
 
 ## Use with Grok, ChatGPT, Venice
 
@@ -185,7 +147,7 @@ Setup notes: [https://decisiongate-download-tracker.vibelock.workers.dev/ai](htt
 MCP catalog (ships separately): `https://aziel-runtime.vibelock.workers.dev/mcp`
 
 ```bash
-curl -sS -X POST https://decisiongate-download-tracker.vibelock.workers.dev/v1/check \
+curl -sS -A 'Mozilla/5.0' -X POST https://decisiongate-download-tracker.vibelock.workers.dev/v1/check \
   -H "content-type: application/json" \
   -d '{
     "statement": "Release DecisionGATE 0.1.0 as a standalone Python package with Apache-2.0 licensing on GitHub this month.",
@@ -197,8 +159,12 @@ curl -sS -X POST https://decisiongate-download-tracker.vibelock.workers.dev/v1/c
   }'
 ```
 
+## iPhone & Android
+
+A local-first Flutter client lives in [`mobile/`](mobile/). Five-gate form, sequential PASS / REVISE / BLOCK, motto on screen.
+
 ## License
 
-Apache-2.0. See [LICENSE](LICENSE).
+Apache-2.0. See [LICENSE](LICENSE). Spec: [docs/whitepaper.md](docs/whitepaper.md). How to contribute: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Forks are welcome and always allowed.

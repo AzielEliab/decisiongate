@@ -342,19 +342,19 @@ async function indexHtml(env) {
 <body>
   <h1>DecisionGATE</h1>
   <p class="motto">Freedom without clarity is chaos. Clarity without force is wisdom. Author Aziel Eliab.</p>
-  <p class="banner">THIS IS: an ethical pre-execution filter (PASS / REVISE / BLOCK). THIS IS NOT: predictive, advisory-as-command, or a hosted command runner. wrap is not hosted. Author Aziel Eliab.</p>
+  <p class="banner">THIS IS: a five-gate ethical pre-execution filter (PASS / REVISE / BLOCK). THIS IS NOT: a predictor, a court, a truth score, advice, or a remote command runner. wrap is not hosted. Author Aziel Eliab.</p>
   <div class="card">
     <div class="nums">
       <p class="count">${v}<span>Views</span></p>
       <p class="count">${n}<span>Downloads</span></p>
     </div>
-    <p class="kid"><strong>Two big buttons.</strong> Download saves the gzip (the Downloads number goes up). One-click install copies a Terminal command. After it finishes, type <code>decisiongate ui</code>.</p>
+    <p class="kid"><strong>Three steps.</strong> 1. Tap Download. 2. After install, type <code>decisiongate ui</code>. 3. Type a plan and tap Run. Green is a check, not a command.</p>
     <div class="btns">
       <a class="btn primary dl" href="/download?asset=${DEFAULT_ASSET}">Download</a>
       <button type="button" class="btn install" id="install-btn">One-click install</button>
     </div>
     <pre id="install-cmd">${INSTALL_LINE}</pre>
-    <p class="kid">Then run: <code>decisiongate ui</code> and open http://127.0.0.1:8791 (this computer only).</p>
+    <p class="kid">Then open http://127.0.0.1:8791 (this computer only). Import file and Export file both exist. Verify speaks in plain words.</p>
     <p class="meta">The download count ticks on the Download click. The Worker serves the gzip (HTTP 200). No 302 to GitHub. Forks using this same link are counted automatically. ${DEFAULT_ASSET} — ${n} counted.</p>
     <p class="iso">Isolated counter: Worker <code>decisiongate-download-tracker</code>, project <code>${PROJECT}</code>, KV <code>DECISIONGATE_DOWNLOADS</code>. Not mixed with any other product. /v1 does not increment downloads.</p>
     <p class="meta">GitHub: stars ${gh.stars || 0} · forks ${gh.forks || 0} · watchers ${gh.watchers || 0} · release assets ${gh.release_download_count || 0}</p>
@@ -386,8 +386,9 @@ async function indexHtml(env) {
         });
       })();
     </script>
-    <h2>Per repo / branch / fork</h2>
+    <details class="iso"><summary>Per repo / branch / fork</summary>
     <ul>${breakdown}</ul>
+    </details>
   </div>
 </body>
 </html>`;

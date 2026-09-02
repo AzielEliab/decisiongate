@@ -1,8 +1,8 @@
 """Local DecisionGATE UI. Bind 127.0.0.1 only.
 
-Form for the proposal fields. Five gates as a vertical stack lighting
-PASS / REVISE / BLOCK. Final banner. Export JSON lineage. Self-contained
-CSS, no CDN. Motto on the page.
+Simple view: type a plan, Run, Import file, Export file, Verify.
+Advanced view: extra fields, gate overrides, JSON dump.
+Self-contained CSS, no CDN. Motto on the page. Not advice.
 """
 
 from __future__ import annotations
@@ -12,6 +12,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from importlib.resources import files
 from urllib.parse import urlparse
 
+from decisiongate import LIMITATION, __author__, __version__
 from decisiongate.engine import DecisionGATE
 from decisiongate.proposal import Proposal
 
@@ -22,6 +23,7 @@ MIME = {
     ".css": "text/css; charset=utf-8",
     ".js": "application/javascript; charset=utf-8",
 }
+MAX_BODY_BYTES = 1 * 1024 * 1024
 
 
 def _web_bytes(name: str) -> bytes:
@@ -57,6 +59,23 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/app.js":
             self._send(200, _web_bytes("app.js"), MIME[".js"])
             return
+        if path == "/api/health":
+            self._json(200, {
+                "ok": True,
+                "product": "decisiongate",
+                "version": __version__,
+                "author": __author__,
+                "limitation": LIMITATION,
+                "loopback": True,
+                "telemetry": False,
+                "network": False,
+            })
+            return
+        if path in {"/api/doctor", "/api/verify"}:
+            from decisiongate.doctor import collect_doctor
+
+            self._json(200, collect_doctor())
+            return
         self._json(404, {"error": "not found"})
 
     def do_POST(self) -> None:  # noqa: N802
@@ -65,6 +84,9 @@ class Handler(BaseHTTPRequestHandler):
             self._json(404, {"error": "not found"})
             return
         length = int(self.headers.get("Content-Length") or "0")
+        if length > MAX_BODY_BYTES:
+            self._json(413, {"error": "body too large"})
+            return
         raw = self.rfile.read(length) if length else b"{}"
         try:
             payload = json.loads(raw.decode("utf-8") or "{}")

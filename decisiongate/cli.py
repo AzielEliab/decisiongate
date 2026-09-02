@@ -5,10 +5,15 @@
     decisiongate check --statement "..." --evidence "..." --impact-pos "..."
                        --impact-neg "..." --values "..." --accountable "Name"
     decisiongate wrap --statement "..." -- -- CMD
+    decisiongate doctor
+    decisiongate verify
+    decisiongate import FILE.json
+    decisiongate export FILE.json
 
-Pre-execution filter. Not predictive, advisory, or prescriptive.
+Pre-execution filter. Not a predictor. Not advice. Not a command.
 ``wrap`` runs CMD only if all five gates PASS. Subprocess is the
 user-supplied argv after ``--`` (no shell).
+File import AND export both exist. Doctor/verify speak in plain words.
 Forks always allowed.
 """
 
@@ -30,9 +35,10 @@ def _build_parser() -> argparse.ArgumentParser:
         prog="decisiongate",
         description=(
             "DecisionGATE — lightweight ethical pre-execution filter "
-            "(Aziel Eliab, 2026). Not predictive, advisory, or prescriptive. "
+            "(Aziel Eliab, 2026). Not a predictor. Not advice. Not a command. "
             "Freedom without clarity is chaos. Clarity without force is wisdom. "
-            "Local UI: `decisiongate ui` at http://127.0.0.1:8791."
+            "Local UI: `decisiongate ui` at http://127.0.0.1:8791. "
+            "Import and export JSON files. doctor/verify in plain words."
         ),
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
@@ -116,14 +122,18 @@ def _build_parser() -> argparse.ArgumentParser:
     p_wrap.add_argument("--json", action="store_true", dest="as_json", help="Print the report as JSON.")
 
 
-    p_doc = sub.add_parser("doctor", help="Self-check. No network, no telemetry.")
+    p_doc = sub.add_parser(
+        "doctor",
+        aliases=["verify"],
+        help="Self-check in plain words. No network, no telemetry.",
+    )
     p_doc.add_argument("--json", action="store_true", dest="as_json", help="Print doctor results as JSON.")
 
-    p_imp = sub.add_parser("import", help="Import a JSON document.")
-    p_imp.add_argument("path")
+    p_imp = sub.add_parser("import", help="Import a JSON file (pair of export).")
+    p_imp.add_argument("path", help="Path to a .json file to load.")
 
-    p_exp = sub.add_parser("export", help="Export a JSON document.")
-    p_exp.add_argument("path")
+    p_exp = sub.add_parser("export", help="Export a JSON file (pair of import).")
+    p_exp.add_argument("path", help="Path to write a .json file.")
 
     return parser
 
@@ -211,7 +221,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 0
 
 
-    if args.cmd == "doctor":
+    if args.cmd in {"doctor", "verify"}:
         from decisiongate.doctor import run_doctor
 
         return run_doctor(as_json=getattr(args, "as_json", False))

@@ -221,3 +221,50 @@ footer {
   font-size: 0.88rem;
 }
 .foot-note { font-style: italic; }
+
+.banner.limit {
+  background: #1a1610;
+  color: var(--ink);
+  border-color: #5c4a1a;
+  font-weight: 500;
+  margin: 0 0 1.2rem;
+}
+.view-toggle {
+  display: flex;
+  gap: 0.4rem;
+  margin: 0 0 1rem;
+}
+button.view {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--line);
+}
+button.view.on {
+  background: var(--gold);
+  color: var(--bg);
+  border-color: var(--gold);
+}
+button.big {
+  font-size: 1.05rem;
+  padding: 0.8rem 1.2rem;
+  min-width: 7.2rem;
+}
+button#import, button#export, button#verify {
+  background: transparent;
+  color: var(--ink);
+}
+body.simple .advanced-only { display: none !important; }
+.kid {
+  font-size: 1.05rem;
+  color: var(--ink);
+  margin: 0.85rem 0 0;
+}
+.advanced-panel pre {
+  background: #10161d;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.8rem;
+  overflow: auto;
+  font-size: 0.78rem;
+  max-height: 22rem;
+}
