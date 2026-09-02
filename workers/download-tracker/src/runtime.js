@@ -7,6 +7,8 @@ const PRODUCT = "decisiongate";
 const VERSION = "0.1.0";
 const MOTTO = "Freedom without clarity is chaos. Clarity without force is wisdom.";
 const HOST = "https://decisiongate-download-tracker.vibelock.workers.dev";
+const SKILL = "---\nname: DecisionGATE\ndescription: Use when a proposed action should pass structured ethical gates before execution. Hosted wrap never runs commands. Hosted /v1 via this Worker or aziel-runtime. Author Aziel Eliab.\n---\n\n# DecisionGATE\n\nFreedom without clarity is chaos. Clarity without force is wisdom.\n\nAuthor: **Aziel Eliab**.\n\nUse when a proposed action should pass structured ethical gates before execution. Hosted wrap never runs commands.\n\nAlways send `User-Agent: Mozilla/5.0`. Cloudflare Workers may 403 an empty agent.\n\n## Endpoints (this Worker)\n\nHost: `https://decisiongate-download-tracker.vibelock.workers.dev`\n\n| Method | Path | What |\n|--------|------|------|\n| GET | `/v1/health` | Liveness. Does not increment downloads. |\n| GET | `/v1/skill` | This markdown. Does not increment downloads. |\n| POST | `/v1/check` | Run five gates on a proposal. |\n| POST | `/v1/evaluate` | Alias of /v1/check. |\n\nOpenAPI: `https://decisiongate-download-tracker.vibelock.workers.dev/openapi.json`\n\nCatalog OpenAPI: `https://aziel-runtime.vibelock.workers.dev/openapi.json`\n\nMCP: `POST https://aziel-runtime.vibelock.workers.dev/mcp`\n\nCatalog aliases under `/p/decisiongate/\u2026`.\n\n## How to call (Mozilla/5.0)\n\n```bash\ncurl -s -A 'Mozilla/5.0' https://decisiongate-download-tracker.vibelock.workers.dev/v1/health\ncurl -s -A 'Mozilla/5.0' -X POST https://decisiongate-download-tracker.vibelock.workers.dev/v1/check \\\n  -H 'content-type: application/json' \\\n  -d '{\"action\":\"publish a receipt\",\"evidence\":\"hashed log\",\"impact\":\"local only\",\"integrity\":\"append-only\",\"responsible\":\"Aziel Eliab\"}'\ncurl -s -A 'Mozilla/5.0' https://decisiongate-download-tracker.vibelock.workers.dev/v1/skill\n```\n\nGrok: import the catalog OpenAPI as a custom tool. ChatGPT: GPT Actions. Venice: HTTP tools.\n\n## Local (after one-click install)\n\n```bash\ncurl -fsSL https://decisiongate-download-tracker.vibelock.workers.dev/install.sh | bash\ndecisiongate ui\n```\n\nThen open http://127.0.0.1:8791 (this computer only).\n\n## Honest banner\n\nTHIS IS: an ethical pre-execution filter (PASS / REVISE / BLOCK). THIS IS NOT: predictive, advisory-as-command, or a hosted command runner. wrap is not hosted. Author Aziel Eliab.\n\nDOI: https://doi.org/10.5281/zenodo.21435730  \nRecord: https://zenodo.org/records/21435730\n\nApache-2.0 (or the repo LICENSE). Forks are welcome and always allowed.\n";
+
 
 const PASS = "PASS";
 const REVISE = "REVISE";
@@ -308,7 +310,15 @@ function openapiSpec() {
     },
     servers: [{ url: HOST }],
     paths: {
-      "/v1/health": {
+      
+      "/v1/skill": {
+        get: {
+          operationId: "decisiongate_skill",
+          summary: "Return skill markdown. Does not increment download KV.",
+          responses: { "200": { description: "markdown" } },
+        },
+      },
+"/v1/health": {
         get: {
           operationId: "health",
           summary: "Liveness",
@@ -380,6 +390,12 @@ export async function handleRuntimeApi(request, url) {
   if (!isApi) return null;
 
   if (path === "/v1/health" && request.method === "GET") return json(health());
+  if (path === "/v1/skill" && request.method === "GET") {
+    return new Response(SKILL, {
+      status: 200,
+      headers: { "Content-Type": "text/markdown; charset=utf-8", "Cache-Control": "private, no-store", ...corsHeaders() },
+    });
+  }
   if (path === "/openapi.json" && request.method === "GET") return json(openapiSpec());
   if (path === "/ai" && request.method === "GET") {
     return new Response(aiHtml(), {

@@ -21,6 +21,35 @@ python -m venv .venv && source .venv/bin/activate && pip install -e ".[dev]"
 decisiongate ui
 ```
 
+
+## One-click install
+
+```bash
+curl -fsSL https://decisiongate-download-tracker.vibelock.workers.dev/install.sh | bash
+```
+
+The script curls the **counted** tarball from this project's Worker
+(`/download`, User-Agent `Mozilla/5.0`), extracts, makes a venv, and
+`pip install -e .`. Then run `decisiongate ui`.
+
+Or tap **Download** / **One-click install** on the Worker homepage:
+https://decisiongate-download-tracker.vibelock.workers.dev/
+
+## Counted download (Cloudflare Worker)
+
+**This is the counted download.** GitHub releases exist as a mirror.
+The Worker serves the gzip itself (HTTP 200, no 302 to GitHub).
+
+- Homepage: [https://decisiongate-download-tracker.vibelock.workers.dev/](https://decisiongate-download-tracker.vibelock.workers.dev/)
+- Direct tarball: [decisiongate-0.1.0.tar.gz](https://decisiongate-download-tracker.vibelock.workers.dev/download?asset=decisiongate-0.1.0.tar.gz)
+- One-click install: [https://decisiongate-download-tracker.vibelock.workers.dev/install.sh](https://decisiongate-download-tracker.vibelock.workers.dev/install.sh)
+- Skill: [https://decisiongate-download-tracker.vibelock.workers.dev/v1/skill](https://decisiongate-download-tracker.vibelock.workers.dev/v1/skill)
+- OpenAPI: [https://decisiongate-download-tracker.vibelock.workers.dev/openapi.json](https://decisiongate-download-tracker.vibelock.workers.dev/openapi.json)
+- GitHub: [https://github.com/AzielEliab/decisiongate](https://github.com/AzielEliab/decisiongate)
+- Zenodo DOI: [10.5281/zenodo.21435730](https://doi.org/10.5281/zenodo.21435730) · [record](https://zenodo.org/records/21435730)
+
+Isolated counter: Worker `decisiongate-download-tracker`, KV `DECISIONGATE_DOWNLOADS`. `/v1` does not increment downloads.
+
 Open http://127.0.0.1:8791 (loopback only). No CDN, no telemetry.
 
 Counted download: [https://decisiongate-download-tracker.vibelock.workers.dev/](https://decisiongate-download-tracker.vibelock.workers.dev/)

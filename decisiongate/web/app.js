@@ -99,4 +99,27 @@
     a.click();
     URL.revokeObjectURL(a.href);
   });
+
+  const importEl = document.getElementById("import-json");
+  if (importEl) importEl.addEventListener("change", function () {
+    const f = importEl.files && importEl.files[0];
+    if (!f) return;
+    const reader = new FileReader();
+    reader.onload = function () {
+      let obj;
+      try { obj = JSON.parse(String(reader.result || "{}")); } catch (e) { return; }
+      const p = obj.proposal || obj;
+      function set(id, v) { const el = document.getElementById(id); if (el && v != null) el.value = Array.isArray(v) ? v.join("\n") : String(v); }
+      set("statement", p.statement);
+      set("evidence", p.evidence);
+      set("impacts_positive", p.impacts_positive || p.impact_pos);
+      set("impacts_negative", p.impacts_negative || p.impact_neg);
+      set("values", p.values);
+      set("commitments", p.commitments);
+      set("constraints", p.constraints);
+      set("accountable", p.accountable_person || p.accountable);
+      if (obj.lineage || obj.final_state) paint(obj);
+    };
+    reader.readAsText(f);
+  });
 })();
