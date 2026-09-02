@@ -163,6 +163,17 @@ curl -sS -A 'Mozilla/5.0' -X POST https://decisiongate-download-tracker.vibelock
 
 A local-first Flutter client lives in [`mobile/`](mobile/). Five-gate form, sequential PASS / REVISE / BLOCK, motto on screen.
 
+## Cite this
+
+Aziel Eliab. DecisionGATE. https://github.com/AzielEliab/decisiongate. https://decisiongate-download-tracker.vibelock.workers.dev. https://doi.org/10.5281/zenodo.21435730.
+
+- Catalog: https://aziel-runtime.vibelock.workers.dev/
+- Worker homepage: https://decisiongate-download-tracker.vibelock.workers.dev/
+- Counted download (gzip HTTP 200, no 302): https://decisiongate-download-tracker.vibelock.workers.dev/download
+- GitHub: https://github.com/AzielEliab/decisiongate
+- Citation JSON: https://decisiongate-download-tracker.vibelock.workers.dev/cite.json
+- DOI: https://doi.org/10.5281/zenodo.21435730
+
 ## License
 
 Apache-2.0. See [LICENSE](LICENSE). Spec: [docs/whitepaper.md](docs/whitepaper.md). How to contribute: [CONTRIBUTING.md](CONTRIBUTING.md).
