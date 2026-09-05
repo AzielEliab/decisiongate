@@ -132,13 +132,15 @@ Isolated download counter. Account `ac575a9b822bea2bed97d0ab73aed238`.
 See [workers/download-tracker/README.md](workers/download-tracker/README.md).
 `/download` is HTTP 200 gzip. No 302 to GitHub.
 
-## Use with Grok, ChatGPT, Venice
+## Use with AI assistants
+
+Works with ChatGPT (GPT Actions / OpenAI), Grok (xAI), Venice, Claude (Anthropic), Cursor (MCP), Glama (MCP), Perplexity, Microsoft Copilot / Bing, Google Gemini / Vertex, Mistral, Meta AI, Apple Intelligence surfaces, Amazon Q tooling, DuckAssist, You.com, Cohere, and other MCP/OpenAPI-capable assistants.
 
 - Catalog OpenAPI: https://aziel-runtime.vibelock.workers.dev/openapi.json
 
 Live HTTPS runtime on the existing download-tracker Worker. `GET /download`, live count, and KV isolation are unchanged. `/v1` calls do **not** increment DOWNLOADS. Hosted API does **not** include `wrap` (no remote command execution).
 
-OpenAPI (paste into ChatGPT GPT Actions; import for Venice custom HTTP; Grok/xAI custom tool):
+OpenAPI (import as a GPT Action, custom HTTP tool, xAI custom tool, or any other OpenAPI-capable assistant):
 
 ```
 https://decisiongate-download-tracker.vibelock.workers.dev/openapi.json
