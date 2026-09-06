@@ -53,7 +53,7 @@ The Worker serves the gzip itself (HTTP 200, no 302 to GitHub).
 - GitHub: [https://github.com/AzielEliab/decisiongate](https://github.com/AzielEliab/decisiongate)
 - Zenodo DOI: [10.5281/zenodo.21435730](https://doi.org/10.5281/zenodo.21435730) · [record](https://zenodo.org/records/21435730)
 
-Isolated counter: Worker `decisiongate-download-tracker`, KV `DECISIONGATE_DOWNLOADS`. `/v1` does not increment downloads.
+Isolated counter: Worker `decisiongate-download-tracker`, KV `DECISIONGATE_DOWNLOADS`. `/v1` does not increment downloads. `GET /count` returns `{project, views, downloads, total}`.
 
 ## Quick start (from a clone)
 
