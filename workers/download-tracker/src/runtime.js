@@ -327,7 +327,31 @@ function openapiSpec() {
     },
     servers: [{ url: HOST }],
     paths: {
-      
+      "/count": {
+        get: {
+          operationId: "count",
+          summary: "Isolated view and download counts. Does not increment. Returns {project, views, downloads, total}.",
+          responses: {
+            "200": {
+              description: "OK",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    required: ["project", "views", "downloads", "total"],
+                    properties: {
+                      project: { type: "string" },
+                      views: { type: "integer" },
+                      downloads: { type: "integer" },
+                      total: { type: "integer" },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
             "/v1/example": { get: { operationId: "decisiongateExample", summary: "Sample JSON payload. Does not increment downloads.", responses: { "200": { description: "OK" } } } },
       "/v1/skill": {
         get: {

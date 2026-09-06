@@ -31,6 +31,19 @@ def test_not_inside_sibling_products() -> None:
     assert not (ROOT / "forgereceipts").exists()
 
 
+def test_count_returns_project_views_downloads_total() -> None:
+    src = (ROOT / "workers" / "download-tracker" / "src" / "index.js").read_text()
+    start = src.index('url.pathname === "/count"')
+    chunk = src[start : start + 500]
+    assert "project: PROJECT" in chunk
+    assert "views" in chunk
+    assert "downloads" in chunk
+    assert "total" in chunk
+    assert "json({ project: PROJECT, total: stats.total || 0 })" not in src
+    readme = (ROOT / "workers" / "download-tracker" / "README.md").read_text(encoding="utf-8")
+    assert "{project, views, downloads, total}" in readme
+
+
 def test_readme_author_and_doi() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "Aziel Eliab" in readme

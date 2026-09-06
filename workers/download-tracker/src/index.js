@@ -6,6 +6,7 @@ import { handleRuntimeApi } from "./runtime.js";
  * GET  /download?repo=AzielEliab/decisiongate&tag=latest&asset=...
  *      increments KV, serves gzip via ASSETS.fetch (no 302)
  *      (default https://github.com/AzielEliab/decisiongate/releases)
+ * GET  /count   JSON {project, views, downloads, total}
  * GET  /stats   JSON totals + per-repo + per-branch breakdown
  * POST /event   forks report a download {owner,repo,branch,fork,asset}
  *
@@ -389,7 +390,7 @@ async function indexHtml(env) {
     <p class="iso">Isolated counter: Worker <code>decisiongate-download-tracker</code>, project <code>${PROJECT}</code>, KV <code>DECISIONGATE_DOWNLOADS</code>. Not mixed with any other product. /v1 does not increment downloads.</p>
     <p class="meta">GitHub: stars ${gh.stars || 0} · forks ${gh.forks || 0} · watchers ${gh.watchers || 0} · release assets ${gh.release_download_count || 0}</p>
     <p class="meta">Paper: <a href="${DOI}">doi:10.5281/zenodo.21435730</a> · <a href="${ZENODO}">Zenodo</a> · Apache-2.0 · Eliab, Aziel</p>
-    <p class="meta"><a href="/stats">JSON stats</a> · <a href="/openapi.json">OpenAPI</a> · <a href="/v1/skill">Skill</a> · <a href="/ai">AI runtime</a> · <a href="${GITHUB_REPO}">GitHub</a> · <a href="${GITHUB_LATEST}">releases</a></p>
+    <p class="meta"><a href="/count">JSON count</a> · <a href="/stats">JSON stats</a> · <a href="/openapi.json">OpenAPI</a> · <a href="/v1/skill">Skill</a> · <a href="/ai">AI runtime</a> · <a href="${GITHUB_REPO}">GitHub</a> · <a href="${GITHUB_LATEST}">releases</a></p>
     <script>
       (function () {
         var cmd = "curl -fsSL https://decisiongate-download-tracker.vibelock.workers.dev/install.sh | bash";
@@ -464,7 +465,14 @@ export default {
 
     if (url.pathname === "/count" && request.method === "GET") {
       const stats = await collectStats(env);
-      return json({ project: PROJECT, total: stats.total || 0 });
+      const views = Number(stats.views) || 0;
+      const downloads = Number(stats.downloads != null ? stats.downloads : stats.total) || 0;
+      return json({
+        project: PROJECT,
+        views,
+        downloads,
+        total: Number(stats.total) || downloads,
+      });
     }
 
     if (url.pathname === "/stats" && request.method === "GET") {
