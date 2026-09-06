@@ -30,8 +30,11 @@ Python 3.10+. Core is stdlib only (`dataclasses`, `json`, `http.server`,
 6. **Do not merge this product into ForgeReceipts, ZionPattern Solver,
    or any sibling tree.** DecisionGATE is standalone.
 7. **Keep `/download` HTTP 200 gzip** (no 302 to GitHub). Isolated KV `DECISIONGATE_DOWNLOADS`.
-8. New behavior needs a test that fails without the change.
-9. Human override of a gate is to **REVISE** with a note recorded in
+8. **Door vs local op.** `/v1/mesh/*` PROXY to aziel-runtime. Local ops are `/v1/{op}` only.
+   Suite mesh default OFF; QNM rollup live|locked|isolated; no Node Gate;
+   no auto-heal; not anonymity.
+9. New behavior needs a test that fails without the change.
+10. Human override of a gate is to **REVISE** with a note recorded in
    lineage. Do not silently convert BLOCK to PASS.
 
 ## Where to change things
@@ -43,6 +46,7 @@ Python 3.10+. Core is stdlib only (`dataclasses`, `json`, `http.server`,
 - Local UI: `decisiongate/ui.py`, `decisiongate/web/`
 - Spec: `docs/whitepaper.md`
 - Isolated counter: `workers/download-tracker/`
+- Suite mesh / QNM Live Nodes: `workers/download-tracker/src/mesh.js` (`/v1/mesh/*` PROXY to aziel-runtime).
 
 ## License of contributions
 

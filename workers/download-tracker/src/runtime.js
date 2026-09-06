@@ -2,7 +2,9 @@
  * DecisionGATE hosted runtime (port of decisiongate/gates.py + engine).
  * Sequential PASS/REVISE/BLOCK. wrap / remote command execution is NOT hosted.
  * /v1 calls never touch DOWNLOADS KV.
+ * /v1/mesh/* PROXY to aziel-runtime via AZIEL_RUNTIME (handled in index.js before this catch-all).
  */
+import { meshOpenApiPaths, meshPointer } from "./mesh.js";
 const PRODUCT = "decisiongate";
 const EXAMPLE_PAYLOAD = {
   "statement": "Release the catalog Worker this week.",
@@ -24,7 +26,7 @@ const EXAMPLE_PAYLOAD = {
 const VERSION = "0.1.0";
 const MOTTO = "Freedom without clarity is chaos. Clarity without force is wisdom.";
 const HOST = "https://decisiongate-download-tracker.vibelock.workers.dev";
-const SKILL = "---\nname: DecisionGATE\ndescription: Use when calling DecisionGATE hosted /v1 or installing the local package. Author Aziel Eliab.\n---\n\n# DecisionGATE\n\nA five-gate check before you act. Not a predictor. Not advice. Not a command. Author: **Aziel Eliab**.\n\n**THIS IS:** a lightweight ethical pre-execution filter (PASS / REVISE / BLOCK).\n\n**THIS IS NOT:** a predictor, a court, a truth score, advice, or a hosted command runner. Hosted `/v1` does not increment downloads or views. wrap is not hosted.\n\nAlways send `User-Agent: Mozilla/5.0`. Cloudflare Workers may 403 an empty agent.\n\n## Call these URLs\n\n- Worker OpenAPI: https://decisiongate-download-tracker.vibelock.workers.dev/openapi.json\n- Catalog OpenAPI: https://aziel-runtime.vibelock.workers.dev/openapi.json\n- MCP: `POST https://aziel-runtime.vibelock.workers.dev/mcp`\n- Live skill (this markdown): `GET https://decisiongate-download-tracker.vibelock.workers.dev/v1/skill`\n\nOps (do **not** increment downloads or views):\n\n- `GET /v1/health` — liveness\n- `GET /v1/skill` — this file\n- Product POSTs listed in OpenAPI\n\nWorks with ChatGPT (GPT Actions / OpenAI), Grok (xAI), Venice, Claude (Anthropic), Cursor (MCP), Glama (MCP), Perplexity, Microsoft Copilot / Bing, Google Gemini / Vertex, Mistral, Meta AI, Apple Intelligence surfaces, Amazon Q tooling, DuckAssist, You.com, Cohere, and other MCP/OpenAPI-capable assistants. Import the Worker OpenAPI as a custom tool, GPT Action, or HTTP tool.\n\n## Example\n\n```bash\ncurl -s -A 'Mozilla/5.0' https://decisiongate-download-tracker.vibelock.workers.dev/v1/health\ncurl -s -A 'Mozilla/5.0' https://decisiongate-download-tracker.vibelock.workers.dev/v1/skill\n```\n\n## Local (after one-click install)\n\n```bash\ncurl -fsSL https://decisiongate-download-tracker.vibelock.workers.dev/install.sh | bash\ndecisiongate ui\ndecisiongate doctor\n```\n\nThen open http://127.0.0.1:8791 (this computer only). Import file and Export file both exist. Verify speaks in plain words.\n\nCounted download (gzip HTTP 200, no 302): https://decisiongate-download-tracker.vibelock.workers.dev/download?asset=decisiongate-0.1.0.tar.gz\nGitHub: https://github.com/AzielEliab/decisiongate\n\nPaper: DOI https://doi.org/10.5281/zenodo.21435730 · https://zenodo.org/records/21435730 · Apache-2.0. Forks welcome.\n\n## Catalog + local UI\n\nAuthor: **Aziel Eliab**. Honest scope: Five sequential gates on a proposal. Freedom without clarity is chaos.\n\n- Catalog product: https://aziel-runtime.vibelock.workers.dev/p/decisiongate/\n- Catalog OpenAPI: https://aziel-runtime.vibelock.workers.dev/openapi.json\n- Catalog MCP: `POST https://aziel-runtime.vibelock.workers.dev/mcp`\n- This Worker skill: `GET https://decisiongate-download-tracker.vibelock.workers.dev/v1/skill`\n- This Worker OpenAPI: https://decisiongate-download-tracker.vibelock.workers.dev/openapi.json\n- Sample payload: `GET https://decisiongate-download-tracker.vibelock.workers.dev/v1/example`\n\nLocal UI: **Import JSON file** (`type=file`) and **Export JSON**. Then `decisiongate doctor`.\n\nWorks with ChatGPT (GPT Actions / OpenAI), Grok (xAI), Venice, Claude (Anthropic), Cursor (MCP), Glama (MCP), Perplexity, Microsoft Copilot / Bing, Google Gemini / Vertex, Mistral, Meta AI, Apple Intelligence surfaces, Amazon Q tooling, DuckAssist, You.com, Cohere, and other MCP/OpenAPI-capable assistants. Import the catalog or Worker OpenAPI as a custom tool, GPT Action, or HTTP tool. MCP clients can use the catalog MCP endpoint.\n";
+const SKILL = "---\nname: DecisionGATE\ndescription: Use when calling DecisionGATE hosted /v1 or installing the local package. Dual surface: Worker /v1 + catalog MCP. This Worker /v1/mesh/* PROXY to aziel-runtime via AZIEL_RUNTIME. Suite mesh default OFF. QNM-BUILD-1.0 live|locked|isolated. No Node Gate. No auto-heal. Not anonymity. Author Aziel Eliab.\n---\n\n# DecisionGATE\n\nA five-gate check before you act. Not a predictor. Not advice. Not a command. Author: **Aziel Eliab**.\n\n**THIS IS:** a lightweight ethical pre-execution filter (PASS / REVISE / BLOCK).\n\n**THIS IS NOT:** a predictor, a court, a truth score, advice, or a hosted command runner. Hosted `/v1` does not increment downloads or views. wrap is not hosted.\n\nAlways send `User-Agent: Mozilla/5.0`. Cloudflare Workers may 403 an empty agent.\n\n## Call these URLs\n\n- Worker OpenAPI: https://decisiongate-download-tracker.vibelock.workers.dev/openapi.json\n- Catalog OpenAPI: https://aziel-runtime.vibelock.workers.dev/openapi.json\n- MCP: `POST https://aziel-runtime.vibelock.workers.dev/mcp`\n- Live skill (this markdown): `GET https://decisiongate-download-tracker.vibelock.workers.dev/v1/skill`\n- Suite mesh: `GET https://decisiongate-download-tracker.vibelock.workers.dev/v1/mesh` (PROXY; default OFF)\n\nOps (do **not** increment downloads or views):\n\n- `GET /v1/health` — liveness\n- `GET /v1/skill` — this file\n- `GET /v1/mesh` — PROXY suite mesh status. Default OFF. QNM live|locked|isolated. Never enables.\n- `GET /v1/mesh/nodes` — PROXY Live Nodes roster (5-minute presence).\n- `POST /v1/mesh/{enable,disable,join,heartbeat,leave,broadcast}` — PROXY. Bearer required to enable. No auto-heal. Anon-broadcast is not a publish path.\n- Product POSTs listed in OpenAPI\n\nWorks with ChatGPT (GPT Actions / OpenAI), Grok (xAI), Venice, Claude (Anthropic), Cursor (MCP), Glama (MCP), Perplexity, Microsoft Copilot / Bing, Google Gemini / Vertex, Mistral, Meta AI, Apple Intelligence surfaces, Amazon Q tooling, DuckAssist, You.com, Cohere, and other MCP/OpenAPI-capable assistants. Import the Worker OpenAPI as a custom tool, GPT Action, or HTTP tool. Catalog MCP `mesh_*` + FragGate `slug=mesh`. Suite mesh default OFF. QNM-BUILD-1.0 live|locked|isolated. No Node Gate. No auto-heal. Not anonymity.\n\n## Example\n\n```bash\ncurl -s -A 'Mozilla/5.0' https://decisiongate-download-tracker.vibelock.workers.dev/v1/health\ncurl -s -A 'Mozilla/5.0' https://decisiongate-download-tracker.vibelock.workers.dev/v1/skill\ncurl -s -A 'Mozilla/5.0' https://decisiongate-download-tracker.vibelock.workers.dev/v1/mesh\n```\n\n## Local (after one-click install)\n\n```bash\ncurl -fsSL https://decisiongate-download-tracker.vibelock.workers.dev/install.sh | bash\ndecisiongate ui\ndecisiongate doctor\n```\n\nThen open http://127.0.0.1:8791 (this computer only). Import file and Export file both exist. Verify speaks in plain words.\n\nCounted download (gzip HTTP 200, no 302): https://decisiongate-download-tracker.vibelock.workers.dev/download?asset=decisiongate-0.1.0.tar.gz\nGitHub: https://github.com/AzielEliab/decisiongate\n\nPaper: DOI https://doi.org/10.5281/zenodo.21435730 · https://zenodo.org/records/21435730 · Apache-2.0. Forks welcome.\n\n## Catalog + local UI\n\nAuthor: **Aziel Eliab**. Honest scope: Five sequential gates on a proposal. Freedom without clarity is chaos.\n\n- Catalog product: https://aziel-runtime.vibelock.workers.dev/p/decisiongate/\n- Catalog OpenAPI: https://aziel-runtime.vibelock.workers.dev/openapi.json\n- Catalog MCP: `POST https://aziel-runtime.vibelock.workers.dev/mcp`\n- This Worker skill: `GET https://decisiongate-download-tracker.vibelock.workers.dev/v1/skill`\n- This Worker OpenAPI: https://decisiongate-download-tracker.vibelock.workers.dev/openapi.json\n- Sample payload: `GET https://decisiongate-download-tracker.vibelock.workers.dev/v1/example`\n- Suite mesh: `GET https://decisiongate-download-tracker.vibelock.workers.dev/v1/mesh` PROXY (default OFF)\n\nLocal UI: **Import JSON file** (`type=file`) and **Export JSON**. Then `decisiongate doctor`. Worker homepage Live Nodes strip polls `GET /v1/mesh` (default OFF).\n\nWorks with ChatGPT (GPT Actions / OpenAI), Grok (xAI), Venice, Claude (Anthropic), Cursor (MCP), Glama (MCP), Perplexity, Microsoft Copilot / Bing, Google Gemini / Vertex, Mistral, Meta AI, Apple Intelligence surfaces, Amazon Q tooling, DuckAssist, You.com, Cohere, and other MCP/OpenAPI-capable assistants. Import the catalog or Worker OpenAPI as a custom tool, GPT Action, or HTTP tool. MCP clients can use the catalog MCP endpoint. Suite mesh: `GET /v1/mesh` PROXY (default OFF). Catalog MCP `mesh_*` + FragGate `slug=mesh`.\n";
 
 
 const PASS = "PASS";
@@ -54,8 +56,8 @@ const WORD_RE = /[A-Za-z0-9][A-Za-z0-9._+-]*/g;
 export function corsHeaders() {
   return {
     "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Methods": "GET, POST, HEAD, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Accept, Authorization, X-Aziel-Runtime-Token, User-Agent",
   };
 }
 
@@ -278,7 +280,7 @@ function runGates(proposal, overrides) {
 }
 
 function health() {
-  return { ok: true, author: "Aziel Eliab", product: PRODUCT, version: VERSION };
+  return { ok: true, author: "Aziel Eliab", product: PRODUCT, version: VERSION, mesh: meshPointer() };
 }
 
 function openapiSpec() {
@@ -323,7 +325,7 @@ function openapiSpec() {
     info: {
       title: "DecisionGATE runtime",
       version: VERSION,
-      description: "Ethical pre-execution filter. Sequential PASS/REVISE/BLOCK. wrap (shell exec) is not hosted. " + MOTTO,
+      description: "Ethical pre-execution filter. Sequential PASS/REVISE/BLOCK. wrap (shell exec) is not hosted. " + MOTTO + " Suite mesh /v1/mesh/* PROXY to aziel-runtime (AZIEL_RUNTIME). Default OFF. QNM-BUILD-1.0 live|locked|isolated. No Node Gate. No auto-heal. Not anonymity. Aziel Eliab only.",
     },
     servers: [{ url: HOST }],
     paths: {
@@ -353,6 +355,7 @@ function openapiSpec() {
         },
       },
             "/v1/example": { get: { operationId: "decisiongateExample", summary: "Sample JSON payload. Does not increment downloads.", responses: { "200": { description: "OK" } } } },
+      ...meshOpenApiPaths(),
       "/v1/skill": {
         get: {
           operationId: "decisiongate_skill",
@@ -411,8 +414,9 @@ function aiHtml() {
   <p><code>${HOST}/openapi.json</code></p>
   <p>Clients that take a custom tool can point at <code>POST ${HOST}/v1/check</code> and <code>POST ${HOST}/v1/evaluate</code>.</p>
   <h2>MCP catalog</h2>
-  <p>The shared catalog (ships separately) is <code>https://aziel-runtime.vibelock.workers.dev/mcp</code>.</p>
-  <p><a href="/openapi.json">openapi.json</a> · <a href="/v1/health">health</a> · <a href="/">downloads</a></p>
+  <p>The shared catalog (ships separately) is <code>https://aziel-runtime.vibelock.workers.dev/mcp</code> (catalog <code>mesh_*</code> + FragGate <code>slug=mesh</code>).</p>
+  <p>Suite mesh: <code>GET ${HOST}/v1/mesh</code> PROXY to aziel-runtime. Default OFF. QNM-BUILD-1.0 live|locked|isolated. No Node Gate. No auto-heal. Not anonymity. Author: Aziel Eliab only.</p>
+  <p><a href="/openapi.json">openapi.json</a> · <a href="/v1/health">health</a> · <a href="/v1/mesh">/v1/mesh</a> · <a href="/">downloads</a></p>
 </body>
 </html>`;
 }
@@ -427,6 +431,7 @@ async function readJson(request) {
 
 export async function handleRuntimeApi(request, url) {
   const path = url.pathname;
+  if (path === "/v1/mesh" || path.startsWith("/v1/mesh/")) return null;
   const isApi = path === "/v1" || path.startsWith("/v1/") || path === "/openapi.json" || path === "/ai";
   if (!isApi) return null;
 
@@ -462,5 +467,5 @@ export async function handleRuntimeApi(request, url) {
   if (path === "/v1/wrap" || path.startsWith("/v1/wrap")) {
     return json({ error: "wrap is not hosted; this API never executes commands" }, 404);
   }
-  return json({ error: "not found" }, 404);
+  return json({ error: "not found", hint: "GET /v1/health GET /v1/skill POST /v1/{check,evaluate} GET /v1/mesh" }, 404);
 }

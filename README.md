@@ -49,6 +49,7 @@ The Worker serves the gzip itself (HTTP 200, no 302 to GitHub).
 - Direct tarball: [decisiongate-0.1.0.tar.gz](https://decisiongate-download-tracker.vibelock.workers.dev/download?asset=decisiongate-0.1.0.tar.gz)
 - One-click install: [https://decisiongate-download-tracker.vibelock.workers.dev/install.sh](https://decisiongate-download-tracker.vibelock.workers.dev/install.sh)
 - Skill: [https://decisiongate-download-tracker.vibelock.workers.dev/v1/skill](https://decisiongate-download-tracker.vibelock.workers.dev/v1/skill)
+- Suite mesh proxy: [https://decisiongate-download-tracker.vibelock.workers.dev/v1/mesh](https://decisiongate-download-tracker.vibelock.workers.dev/v1/mesh) — default OFF; QNM live / locked / isolated
 - OpenAPI: [https://decisiongate-download-tracker.vibelock.workers.dev/openapi.json](https://decisiongate-download-tracker.vibelock.workers.dev/openapi.json)
 - GitHub: [https://github.com/AzielEliab/decisiongate](https://github.com/AzielEliab/decisiongate)
 - Zenodo DOI: [10.5281/zenodo.21435730](https://doi.org/10.5281/zenodo.21435730) · [record](https://zenodo.org/records/21435730)
@@ -148,7 +149,7 @@ https://decisiongate-download-tracker.vibelock.workers.dev/openapi.json
 
 Setup notes: [https://decisiongate-download-tracker.vibelock.workers.dev/ai](https://decisiongate-download-tracker.vibelock.workers.dev/ai)
 
-MCP catalog (ships separately): `https://aziel-runtime.vibelock.workers.dev/mcp`
+MCP catalog (ships separately): `https://aziel-runtime.vibelock.workers.dev/mcp`. Suite mesh `/v1/mesh/*` PROXY via `AZIEL_RUNTIME` (default OFF; QNM-BUILD-1.0 live|locked|isolated; no Node Gate). Catalog MCP `mesh_*` + FragGate `slug=mesh`.
 
 ```bash
 curl -sS -A 'Mozilla/5.0' -X POST https://decisiongate-download-tracker.vibelock.workers.dev/v1/check \
