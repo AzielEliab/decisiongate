@@ -31,8 +31,9 @@ Python 3.10+. Core is stdlib only (`dataclasses`, `json`, `http.server`,
    or any sibling tree.** DecisionGATE is standalone.
 7. **Keep `/download` HTTP 200 gzip** (no 302 to GitHub). Isolated KV `DECISIONGATE_DOWNLOADS`.
 8. **Door vs local op.** `/v1/mesh/*` PROXY to aziel-runtime. Local ops are `/v1/{op}` only.
-   Suite mesh default OFF; QNM rollup live|locked|isolated; no Node Gate;
-   no auto-heal; not anonymity.
+   Suite mesh default OFF; QNM rollup live|locked|isolated; QNS-CD-1.0
+   hub cite only (photon QNS1 packet transfer); no Node Gate; no public
+   qnsd proxy; no auto-heal; not anonymity.
 9. New behavior needs a test that fails without the change.
 10. Human override of a gate is to **REVISE** with a note recorded in
    lineage. Do not silently convert BLOCK to PASS.
@@ -46,7 +47,7 @@ Python 3.10+. Core is stdlib only (`dataclasses`, `json`, `http.server`,
 - Local UI: `decisiongate/ui.py`, `decisiongate/web/`
 - Spec: `docs/whitepaper.md`
 - Isolated counter: `workers/download-tracker/`
-- Suite mesh / QNM Live Nodes: `workers/download-tracker/src/mesh.js` (`/v1/mesh/*` PROXY to aziel-runtime).
+- Suite mesh / QNM Live Nodes: `workers/download-tracker/src/mesh.js` (`/v1/mesh/*` PROXY to aziel-runtime). QNS-CD-1.0 is a hub cite / Worker mesh cross-map (`QNS_CD_SPEC` + `QNS_CD`); do not implement qnsd or a public proxy here.
 
 ## License of contributions
 

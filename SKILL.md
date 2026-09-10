@@ -1,6 +1,6 @@
 ---
 name: DecisionGATE
-description: Use when calling DecisionGATE hosted /v1 or installing the local package. Dual surface: Worker /v1 + catalog MCP. This Worker /v1/mesh/* PROXY to aziel-runtime via AZIEL_RUNTIME. Suite mesh default OFF. QNM-BUILD-1.0 live|locked|isolated. No Node Gate. No auto-heal. Not anonymity. Author Aziel Eliab.
+description: Use when calling DecisionGATE hosted /v1 or installing the local package. Dual surface: Worker /v1 + catalog MCP. This Worker /v1/mesh/* PROXY to aziel-runtime via AZIEL_RUNTIME. Suite mesh default OFF. QNM-BUILD-1.0 live|locked|isolated. QNS-CD-1.0 hub cite (photon QNS1 packet transfer). No Node Gate. No public qnsd proxy. No auto-heal. Not anonymity. Author Aziel Eliab.
 ---
 
 # DecisionGATE
@@ -24,8 +24,8 @@ Ops (do **not** increment downloads or views):
 
 - `GET /v1/health` — liveness
 - `GET /v1/skill` — this file
-- `GET /v1/mesh` — PROXY suite mesh status. Default OFF. QNM live|locked|isolated. Never enables.
-- `GET /v1/mesh/nodes` — PROXY Live Nodes roster (5-minute presence).
+- `GET /v1/mesh` — PROXY suite mesh status. Default OFF. QNM live|locked|isolated. QNS-CD-1.0 hub cite / Worker mesh cross-map (photon QNS1 packet transfer). Never enables. No public qnsd proxy.
+- `GET /v1/mesh/nodes` — PROXY Live Nodes roster (5-minute presence). Payload includes the QNS-CD-1.0 cross-map.
 - `POST /v1/mesh/{enable,disable,join,heartbeat,leave,broadcast}` — PROXY. Bearer required to enable. No auto-heal. Anon-broadcast is not a publish path.
 - Product POSTs listed in OpenAPI
 
@@ -65,6 +65,6 @@ Author: **Aziel Eliab**. Honest scope: Five sequential gates on a proposal. Free
 - This Worker OpenAPI: https://decisiongate-download-tracker.vibelock.workers.dev/openapi.json
 - Sample payload: `GET https://decisiongate-download-tracker.vibelock.workers.dev/v1/example`
 
-Local UI: **Import JSON file** (`type=file`) and **Export JSON**. Then `decisiongate doctor`. Worker homepage Live Nodes strip polls `GET /v1/mesh` (default OFF).
+Local UI: **Import JSON file** (`type=file`) and **Export JSON**. Then `decisiongate doctor`. Worker homepage Live Nodes strip polls `GET /v1/mesh` (default OFF). Mesh JSON carries `qns_cd` (QNS-CD-1.0) pointing at [qnm-node](https://github.com/AzielEliab/qnm-node) and [aziel-runtime](https://github.com/AzielEliab/aziel-runtime). Hub cite only — not a Softwares-tab product.
 
 Works with ChatGPT (GPT Actions / OpenAI), Grok (xAI), Venice, Claude (Anthropic), Cursor (MCP), Glama (MCP), Perplexity, Microsoft Copilot / Bing, Google Gemini / Vertex, Mistral, Meta AI, Apple Intelligence surfaces, Amazon Q tooling, DuckAssist, You.com, Cohere, and other MCP/OpenAPI-capable assistants. Import the catalog or Worker OpenAPI as a custom tool, GPT Action, or HTTP tool. MCP clients can use the catalog MCP endpoint.

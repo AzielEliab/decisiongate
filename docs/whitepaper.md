@@ -215,7 +215,9 @@ undeployed.
 
 The Worker homepage shows a suite Live Nodes strip. `/v1/mesh/*` PROXY
 to aziel-runtime. Suite mesh default OFF. QNM rollup is
-live|locked|isolated counts only. No Node Gate. No auto-heal. Not an
+live|locked|isolated counts only. QNS-CD-1.0 is a hub cite / Worker mesh
+cross-map (photon QNS1 packet transfer). Local qnsd stays in qnm-node.
+No Node Gate. No public qnsd proxy. No auto-heal. Not an
 anonymity network. Anon-broadcast is not a publish path. DecisionGATE
 remains a five-gate ethical pre-execution filter.
 
