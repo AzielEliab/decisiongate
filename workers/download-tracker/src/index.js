@@ -326,6 +326,9 @@ async function indexHtml(env) {
 <meta property="og:description" content="Five-gate ethical pre-execution filter (PASS / REVISE / BLOCK) by Aziel Eliab; not a predictor or command runner.">
 <meta property="og:url" content="https://decisiongate-download-tracker.vibelock.workers.dev/">
 <meta property="og:type" content="website">
+<meta property="og:image" content="https://decisiongate-download-tracker.vibelock.workers.dev/sigil.png">
+<meta property="og:image:alt" content="rose-star brand mark">
+<link rel="icon" href="/sigil.png">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -347,6 +350,8 @@ async function indexHtml(env) {
 <style>
   :root { color-scheme: dark; }
   body { font: 16px/1.45 system-ui, sans-serif; max-width: 42rem; margin: 3rem auto; padding: 0 1.25rem 4rem; background: #0e1014; color: #e8eaef; }
+  .brandrow { display: flex; align-items: center; margin: 0 0 1rem; min-height: 48px; }
+  .brandmark { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; flex: 0 0 40px; box-shadow: 0 0 0 1px #0003, 0 0 0 1px #c9a227; }
   h1 { font-size: 1.75rem; margin: 0 0 .35rem; }
   .motto { color: #9aa3b2; margin: 0 0 1.5rem; }
   .card { border: 1px solid #2a3140; border-radius: 12px; padding: 1.25rem 1.35rem; background: #151922; }
@@ -381,6 +386,7 @@ async function indexHtml(env) {
   #meshProducts { flex-basis: 100%; margin: 0; }
 </style>
 <body>
+  <div class="brandrow"><img class="brandmark" src="/sigil.png" width="40" height="40" alt="" decoding="async"></div>
   <h1>DecisionGATE</h1>
   <p class="motto">Freedom without clarity is chaos. Clarity without force is wisdom. Author Aziel Eliab.</p>
   <p class="banner">THIS IS: a five-gate ethical pre-execution filter (PASS / REVISE / BLOCK). THIS IS NOT: a predictor, a court, a truth score, advice, or a remote command runner. wrap is not hosted. Author Aziel Eliab.</p>
