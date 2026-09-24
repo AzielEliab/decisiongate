@@ -1,4 +1,4 @@
-/* DecisionGATE UI. No CDN. Filter, do not advise. Simple by default. */
+/* DecisionGATE local screen. No CDN. */
 (function () {
   const form = document.getElementById("proposal-form");
   const banner = document.getElementById("banner");
@@ -8,22 +8,16 @@
   const verifyBtn = document.getElementById("verify");
   const kid = document.getElementById("kid-plain");
   const rowsPre = document.getElementById("rows-pre");
-  const viewSimple = document.getElementById("view-simple");
-  const viewAdvanced = document.getElementById("view-advanced");
-  const advancedPanel = document.getElementById("advanced-panel");
+  const advanced = document.getElementById("advanced");
   const names = ["Definition", "Evidence", "Impact", "Integrity", "Responsibility"];
   let lastReport = null;
-  let advanced = false;
-  document.body.classList.add("simple");
 
-  function setView(next) {
-    advanced = next;
-    document.body.classList.toggle("simple", !advanced);
-    viewSimple.classList.toggle("on", !advanced);
-    viewAdvanced.classList.toggle("on", advanced);
-    viewSimple.setAttribute("aria-pressed", String(!advanced));
-    viewAdvanced.setAttribute("aria-pressed", String(advanced));
-    if (advancedPanel) advancedPanel.hidden = !advanced;
+  function syncAdvanced() {
+    document.body.classList.toggle("show-advanced", !!(advanced && advanced.open));
+  }
+  if (advanced) {
+    advanced.addEventListener("toggle", syncAdvanced);
+    syncAdvanced();
   }
 
   function lines(id) {
@@ -79,7 +73,7 @@
       if (!result) {
         li.classList.add("skipped");
         stateEl.textContent = "not reached";
-        feedbackEl.textContent = "Stopped before this gate. First failure ends the chain.";
+        feedbackEl.textContent = "Stopped before this gate. The first one that does not pass ends the chain.";
         return;
       }
       li.classList.add(result.state);
@@ -89,24 +83,21 @@
     const final = report.final_state || "REVISE";
     banner.className = "banner " + final;
     let text = "Final: " + final;
-    let kidText = "Tap Run after you type a plan.";
+    let kidText = "Run the check after you fill in the plan.";
     if (final === "PASS") {
-      text = "PASS — all five gates survived scrutiny. This is not advice to proceed; it is clearance that the proposal was inspectable.";
-      kidText = "All five lights said yes. That is not 'go do it.' It only means the plan was clear enough to inspect.";
+      text = "PASS. All five gates were clear enough to inspect.";
+      kidText = "You can export this result from Advanced.";
     } else if (final === "REVISE") {
-      text = "REVISE — first failure needs a more specific proposal. Feedback is on the lit gate.";
-      kidText = "Stop. Make the plan clearer. Read the yellow light.";
+      text = "REVISE. The highlighted gate needs a more specific plan. Update it, then run the check again.";
+      kidText = "Read the amber gate, change that part, and run the check again.";
     } else if (final === "BLOCK") {
-      text = "BLOCK at " + (report.blocked_at || "a gate") + " — cannot be remedied without changing the proposal's nature.";
-      kidText = "Stop. This plan cannot pass unless you change what it is.";
+      text = "BLOCK at " + (report.blocked_at || "a gate") + ". Change the plan, then run the check again.";
+      kidText = "The red gate stopped the chain. Change that part, then run the check again.";
     }
     banner.textContent = text;
     if (kid) kid.textContent = kidText;
     if (rowsPre) rowsPre.textContent = JSON.stringify(report, null, 2);
   }
-
-  viewSimple.addEventListener("click", function () { setView(false); });
-  viewAdvanced.addEventListener("click", function () { setView(true); });
 
   form.addEventListener("submit", function (ev) {
     ev.preventDefault();
@@ -119,10 +110,10 @@
     })
       .then(function (r) { return r.json(); })
       .then(paint)
-      .catch(function (err) {
+      .catch(function () {
         banner.className = "banner BLOCK";
-        banner.textContent = "Request failed: " + err;
-        if (kid) kid.textContent = "The check could not run. This is not advice.";
+        banner.textContent = "The check did not run. Try again, or run decisiongate doctor in a terminal.";
+        if (kid) kid.textContent = "If this keeps happening, run decisiongate doctor.";
       });
   });
 
@@ -150,7 +141,7 @@
         };
     if (!doc.proposal) doc.proposal = proposalFromForm();
     downloadJson(doc, "decisiongate.json");
-    if (kid) kid.textContent = "Saved a JSON file. Import file loads it back. This is not advice.";
+    if (kid) kid.textContent = "Saved a JSON file. Import file in Advanced loads it back.";
   });
 
   importBtn.addEventListener("click", function () {
@@ -165,8 +156,8 @@
       let obj;
       try { obj = JSON.parse(String(reader.result || "{}")); } catch (e) {
         banner.className = "banner BLOCK";
-        banner.textContent = "That file is not JSON.";
-        if (kid) kid.textContent = "Import needs a JSON file. Export file makes one.";
+        banner.textContent = "That file is not JSON. Export a file from Advanced, then import that file.";
+        if (kid) kid.textContent = "Import file needs a JSON file.";
         return;
       }
       const p = obj.proposal || obj.payload || obj;
@@ -182,8 +173,13 @@
       set("commitments", p.commitments);
       set("constraints", p.constraints);
       set("accountable", p.accountable_person || p.accountable);
-      if (obj.lineage || obj.final_state) paint(obj);
-      else if (kid) kid.textContent = "Loaded the file into the form. Tap Run to check it.";
+      if (obj.lineage || obj.final_state) {
+        paint(obj);
+      } else {
+        banner.className = "banner idle";
+        banner.textContent = "Loaded " + f.name + ". Run the check when you are ready.";
+        if (kid) kid.textContent = "Loaded the file into the form. Run the check when you are ready.";
+      }
     };
     reader.readAsText(f);
     importEl.value = "";
@@ -193,15 +189,15 @@
     fetch("/api/verify")
       .then(function (r) { return r.json(); })
       .then(function (doc) {
-        const lines = (doc.plain || []).join(" ");
+        const linesOut = (doc.plain || []).join(" ");
         banner.className = "banner " + (doc.ok ? "PASS" : "BLOCK");
-        banner.textContent = doc.summary || lines;
-        if (kid) kid.textContent = lines || "Verify finished.";
+        banner.textContent = doc.summary || linesOut;
+        if (kid) kid.textContent = linesOut || "Verify finished.";
         if (rowsPre) rowsPre.textContent = JSON.stringify(doc, null, 2);
       })
-      .catch(function (err) {
+      .catch(function () {
         banner.className = "banner BLOCK";
-        banner.textContent = "Verify failed: " + err;
+        banner.textContent = "Verify did not finish. Try decisiongate doctor in a terminal.";
       });
   });
 })();

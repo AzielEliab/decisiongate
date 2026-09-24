@@ -32,12 +32,36 @@ def test_cli_import_export(tmp_path: Path, monkeypatch, capsys) -> None:
     monkeypatch.chdir(tmp_path)
     src = tmp_path / "a.json"
     src.write_text(json.dumps({"ok": True, "n": 1}), encoding="utf-8")
-    assert main(["import", str(src)]) == 0
+    assert main(["import", str(src), "--json"]) == 0
     imported = json.loads(capsys.readouterr().out)
     assert imported["ok"] is True
     dst = tmp_path / "b.json"
-    assert main(["export", str(dst)]) == 0
+    assert main(["export", str(dst), "--json"]) == 0
     exported = json.loads(capsys.readouterr().out)
     assert exported["ok"] is True
     assert dst.is_file()
     assert "Aziel Eliab" in dst.read_text(encoding="utf-8")
+
+
+def test_cli_import_export_human(tmp_path: Path, monkeypatch, capsys) -> None:
+    monkeypatch.chdir(tmp_path)
+    src = tmp_path / "a.json"
+    src.write_text(json.dumps({"ok": True}), encoding="utf-8")
+    assert main(["import", str(src)]) == 0
+    out = capsys.readouterr().out
+    assert "Imported" in out
+    assert "decisiongate export" in out
+    assert not out.lstrip().startswith("{")
+    dst = tmp_path / "b.json"
+    assert main(["export", str(dst)]) == 0
+    exported = capsys.readouterr().out
+    assert "Exported" in exported
+    assert dst.is_file()
+
+
+def test_cli_import_missing_file(capsys) -> None:
+    assert main(["import", "no-such-decisiongate.json"]) == 2
+    err = capsys.readouterr().err
+    assert "No file" in err
+    assert "decisiongate import" in err
+    assert "Traceback" not in err

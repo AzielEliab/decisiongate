@@ -95,6 +95,40 @@ def test_cli_check_json_lineage(capsys) -> None:
     ]
 
 
+def test_bare_command_welcomes(capsys) -> None:
+    assert main([]) == 0
+    out = capsys.readouterr().out
+    assert "five gates" in out
+    assert "decisiongate ui" in out
+    assert "decisiongate doctor" in out
+    assert "Aziel Eliab" in out
+    assert "arguments are required" not in out
+
+
+def test_bare_command_json(capsys) -> None:
+    assert main(["--json"]) == 0
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["product"] == "decisiongate"
+    assert payload["author"] == "Aziel Eliab"
+    assert "decisiongate ui" in payload["next"]
+
+
+def test_unknown_command_plain(capsys) -> None:
+    assert main(["bogus"]) == 2
+    err = capsys.readouterr().err
+    assert 'Unknown command "bogus"' in err
+    assert "decisiongate --help" in err
+    assert "Traceback" not in err
+
+
+def test_unknown_option_plain(capsys) -> None:
+    assert main(["check", "--nope"]) == 2
+    err = capsys.readouterr().err
+    assert "Unknown option" in err
+    assert "decisiongate check --help" in err
+    assert "Traceback" not in err
+
+
 def test_help_lists_ui_and_version() -> None:
     from decisiongate.cli import _build_parser
 
@@ -106,6 +140,8 @@ def test_help_lists_ui_and_version() -> None:
     assert "import" in text
     assert "export" in text
     assert "127.0.0.1:8791" in text or "decisiongate ui" in text
+    assert "Not a predictor" not in text
+    assert "examples:" in text
 
 
 def test_wrap_failing_statement_does_not_run_dummy(tmp_path, capsys) -> None:

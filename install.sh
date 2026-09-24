@@ -27,6 +27,6 @@ python -m pip install -e .
 
 echo
 echo "Installed DecisionGATE."
-echo "Run:  decisiongate ui"
-echo "Then open http://127.0.0.1:8791  (loopback only)"
-echo "Author: Aziel Eliab."
+echo "Next: decisiongate ui"
+echo "Open http://127.0.0.1:8791/"
+echo "Author: Aziel Eliab"

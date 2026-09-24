@@ -1,31 +1,23 @@
 # DecisionGATE
 
-A five-gate check before you act. Not a predictor. Not advice. Not a command.
+Check a plan through five gates before you act.
 
 **Author:** Aziel Eliab
 **Date:** July 2026
 **License:** [Apache-2.0](LICENSE)
 **DOI:** [10.5281/zenodo.21435730](https://doi.org/10.5281/zenodo.21435730)
 
+## Three steps
+
+1. Install: `python -m venv .venv && source .venv/bin/activate && pip install -e .`
+2. Start the local screen: `decisiongate ui`
+3. Open http://127.0.0.1:8791/ and run a check.
+
+Self-check: `decisiongate doctor` (same as `decisiongate verify`).
+
 > Freedom without clarity is chaos. Clarity without force is wisdom.
 
 **Forks are welcome and always allowed.**
-
-## Honest scope
-
-**THIS IS:** a local five-step filter (Definition, Evidence, Impact, Integrity, Responsibility). Each step is PASS, REVISE, or BLOCK. The first fail stops the chain.
-
-**THIS IS NOT:** a predictor, a court, a truth score, advice, or a remote command runner. Hosted `wrap` is not offered. PASS means the plan was inspectable — not "you should do it."
-
-This tree is a standalone product. It is not ForgeReceipts. It is not ZionPattern Solver.
-
-## Three steps
-
-1. Tap **Download** on the Worker page (or paste the one-click install line).
-2. Run `decisiongate ui` and open http://127.0.0.1:8791 on this computer.
-3. Type a plan. Tap **Run**. Green means it survived the five checks. That is not "go do it."
-
-Self-check in plain words: `decisiongate doctor` (same as `decisiongate verify`).
 
 ## One-click install
 
@@ -78,9 +70,10 @@ decisiongate import FILE.json
 decisiongate export FILE.json
 ```
 
+`decisiongate` with no arguments prints a short welcome and the next commands.
 `check --json` prints lineage, `final_state`, and optional `blocked_at`.
 `wrap` runs `CMD` only if all five gates PASS (no shell).
-Import and export both write/read JSON files. Doctor/verify speak in plain words.
+Import and export both write and read JSON files. Add `--json` when a program should read the record. Doctor and verify speak in plain words.
 
 ## Library
 
@@ -102,11 +95,9 @@ for gate in report.lineage:
 
 ## UI
 
-`decisiongate ui` binds **127.0.0.1:8791** only.
+`decisiongate ui` prints `Open http://127.0.0.1:8791/` and serves this computer only.
 
-Simple: type a plan, **Run**, **Import file**, **Export file**, **Verify**.
-Advanced (tucked away): extra fields, override to REVISE, JSON dump.
-Five lights: PASS (green) / REVISE (amber) / BLOCK (red). Self-contained CSS, no CDN.
+The first screen has one primary action: **Run check**. Import file, Export file, Verify, extra fields, gate overrides, and the JSON view sit under **Advanced**. Light and dark follow the system. Keyboard focus uses a gold ring. Self-contained CSS, no CDN.
 
 ## Tests
 
@@ -126,6 +117,14 @@ Documented in `decisiongate/gates.py`. Kept small and tested. Not ML.
 - **Impact** fails if either the positive or the negative list is empty (REVISE).
 - **Integrity** fails if values are empty (REVISE) or the statement clearly contradicts a provided constraint via a simple substring/negation check (BLOCK).
 - **Responsibility** fails if `accountable_person` is blank (BLOCK).
+
+## Notes
+
+**THIS IS:** a local five-step filter (Definition, Evidence, Impact, Integrity, Responsibility). Each step is PASS, REVISE, or BLOCK. The first one that does not pass stops the chain. PASS means the plan was clear enough to inspect.
+
+**THIS IS NOT:** a predictor, a court, a truth score, advice, or a remote command runner. Hosted `wrap` is not offered.
+
+This tree is the standalone DecisionGATE package.
 
 ## Worker
 

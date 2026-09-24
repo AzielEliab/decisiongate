@@ -3,71 +3,68 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DecisionGATE — pre-execution filter</title>
+  <title>DecisionGATE — check a plan</title>
   <link rel="stylesheet" href="/style.css">
 </head>
-<body class="simple">
-  <header>
-    <div class="tag">DecisionGATE · v0.1.0 · loopback · not advice</div>
-    <h1>DecisionGATE</h1>
-    <p class="motto">Freedom without clarity is chaos. Clarity without force is wisdom.</p>
-    <p class="lede">
-      Type a plan. Tap Run. Five lights say yes, change it, or stop.
-      Green is a check, not a command to do the thing. Author Aziel Eliab.
-    </p>
+<body>
+  <header class="top">
+    <div>
+      <p class="product">DecisionGATE</p>
+      <h1>Check a plan</h1>
+    </div>
+    <p class="author">Aziel Eliab</p>
   </header>
-
-  <aside class="banner limit" role="note">
-    THIS IS: a five-gate ethical pre-execution filter (PASS / REVISE / BLOCK).
-    THIS IS NOT: a predictor, a court, a truth score, advice, or a remote command runner.
-    wrap is not hosted. Author Aziel Eliab.
-  </aside>
-
-  <div class="view-toggle" role="group" aria-label="Simple or advanced view">
-    <button type="button" id="view-simple" class="view on" aria-pressed="true">Simple</button>
-    <button type="button" id="view-advanced" class="view" aria-pressed="false">Advanced</button>
-  </div>
+  <p class="lede">Five gates look at one plan and stop at the first that does not pass. Fill in the fields, then run the check.</p>
 
   <form id="proposal-form" autocomplete="off">
-    <fieldset>
-      <legend>Proposal</legend>
+    <label for="statement">
+      <span class="kicker">Statement</span>
+      What will you do? Say it in a full sentence.
+    </label>
+    <textarea id="statement" name="statement" rows="3" placeholder="Release DecisionGATE 0.1.0 as a standalone Python package under Apache-2.0 on GitHub this month."></textarea>
 
-      <label for="statement">
-        <span class="kicker">Statement</span>
-        What will you do? Say it clearly. Vague plans fail the first check.
-      </label>
-      <textarea id="statement" name="statement" rows="3" placeholder="Release DecisionGATE 0.1.0 as a standalone Python package under Apache-2.0 on GitHub this month."></textarea>
+    <label for="evidence">
+      <span class="kicker">Evidence</span>
+      Facts. One per line.
+    </label>
+    <textarea id="evidence" name="evidence" rows="3" placeholder="Package builds with stdlib only.&#10;Whitepaper dated July 2026 specifies five gates."></textarea>
 
-      <label for="evidence">
-        <span class="kicker">Evidence</span>
-        Facts. One per line. Empty fails Evidence.
-      </label>
-      <textarea id="evidence" name="evidence" rows="3" placeholder="Package builds with stdlib only.&#10;Whitepaper dated July 2026 specifies five gates."></textarea>
-
-      <div class="pair">
-        <div>
-          <label for="impacts_positive">
-            <span class="kicker">Positive impacts</span>
-            Who is helped. One per line.
-          </label>
-          <textarea id="impacts_positive" name="impacts_positive" rows="3" placeholder="Authors get a named scrutiny path."></textarea>
-        </div>
-        <div>
-          <label for="impacts_negative">
-            <span class="kicker">Negative impacts</span>
-            Who is burdened. One per line.
-          </label>
-          <textarea id="impacts_negative" name="impacts_negative" rows="3" placeholder="Vague proposals take longer to rewrite."></textarea>
-        </div>
+    <div class="pair">
+      <div>
+        <label for="impacts_positive">
+          <span class="kicker">Who is helped</span>
+          One per line.
+        </label>
+        <textarea id="impacts_positive" name="impacts_positive" rows="3" placeholder="Authors get a named scrutiny path."></textarea>
       </div>
+      <div>
+        <label for="impacts_negative">
+          <span class="kicker">Who is burdened</span>
+          One per line.
+        </label>
+        <textarea id="impacts_negative" name="impacts_negative" rows="3" placeholder="Vague proposals take longer to rewrite."></textarea>
+      </div>
+    </div>
 
-      <label for="values">
-        <span class="kicker">Values</span>
-        What you already said you care about. One per line.
-      </label>
-      <textarea id="values" name="values" rows="2" placeholder="Clarity without force. Named responsibility."></textarea>
+    <label for="values">
+      <span class="kicker">Values</span>
+      What you already said you care about. One per line.
+    </label>
+    <textarea id="values" name="values" rows="2" placeholder="Clarity without force."></textarea>
 
-      <div class="advanced-only">
+    <label for="accountable">
+      <span class="kicker">Accountable person</span>
+      One named owner.
+    </label>
+    <input id="accountable" name="accountable" type="text" placeholder="Aziel Eliab" spellcheck="false">
+
+    <div class="actions">
+      <button type="submit" id="run" class="primary">Run check</button>
+    </div>
+
+    <details id="advanced">
+      <summary>Advanced</summary>
+      <div class="advanced-body">
         <label for="commitments">
           <span class="kicker">Commitments</span>
           Prior commitments. One per line. Optional.
@@ -76,25 +73,22 @@
 
         <label for="constraints">
           <span class="kicker">Constraints</span>
-          Hard bounds. One per line. A statement that contradicts a prohibition is BLOCK.
+          Hard bounds. One per line. A plan that contradicts a prohibition stops here.
         </label>
-        <textarea id="constraints" name="constraints" rows="2" placeholder="Do not bind the UI on 0.0.0.0."></textarea>
+        <textarea id="constraints" name="constraints" rows="2" placeholder="Do not bind the screen on 0.0.0.0."></textarea>
+
+        <div class="actions secondary">
+          <button type="button" id="import" class="ghost">Import file</button>
+          <button type="button" id="export" class="ghost">Export file</button>
+          <button type="button" id="verify" class="ghost">Verify</button>
+          <input type="file" id="import-json" accept="application/json,.json" hidden>
+        </div>
+        <p class="hint">Open Advanced to record a gate override on each gate below. Overrides are saved in the result.</p>
+
+        <h2>JSON</h2>
+        <pre id="rows-pre">{}</pre>
       </div>
-
-      <label for="accountable">
-        <span class="kicker">Accountable person</span>
-        One named owner. Blank is BLOCK.
-      </label>
-      <input id="accountable" name="accountable" type="text" placeholder="Aziel Eliab" spellcheck="false">
-    </fieldset>
-
-    <div class="actions simple-actions">
-      <button type="submit" id="run" class="big">Run</button>
-      <button type="button" id="import" class="big">Import file</button>
-      <button type="button" id="export" class="big">Export file</button>
-      <button type="button" id="verify" class="big">Verify</button>
-      <input type="file" id="import-json" accept="application/json,.json" hidden>
-    </div>
+    </details>
   </form>
 
   <section class="gates" aria-live="polite">
@@ -105,11 +99,11 @@
         <div class="body">
           <div class="title"><span class="n">1</span> Definition</div>
           <p class="state">waiting</p>
-          <p class="feedback">Say the plan in plain words. Vague or shifting → REVISE or BLOCK.</p>
+          <p class="feedback">Say the plan in plain words.</p>
           <label class="override advanced-only">
             <input type="checkbox" data-override="Definition"> Override to REVISE
           </label>
-          <input type="text" class="note advanced-only" data-note="Definition" placeholder="Override note (recorded in lineage)" disabled>
+          <input type="text" class="note advanced-only" data-note="Definition" placeholder="Override note (recorded in the result)" disabled>
         </div>
       </li>
       <li class="gate pending" data-gate="Evidence">
@@ -117,11 +111,11 @@
         <div class="body">
           <div class="title"><span class="n">2</span> Evidence</div>
           <p class="state">waiting</p>
-          <p class="feedback">Facts, data, observations. Ungrounded assertions → REVISE.</p>
+          <p class="feedback">Facts, data, observations.</p>
           <label class="override advanced-only">
             <input type="checkbox" data-override="Evidence"> Override to REVISE
           </label>
-          <input type="text" class="note advanced-only" data-note="Evidence" placeholder="Override note (recorded in lineage)" disabled>
+          <input type="text" class="note advanced-only" data-note="Evidence" placeholder="Override note (recorded in the result)" disabled>
         </div>
       </li>
       <li class="gate pending" data-gate="Impact">
@@ -129,11 +123,11 @@
         <div class="body">
           <div class="title"><span class="n">3</span> Impact</div>
           <p class="state">waiting</p>
-          <p class="feedback">Who is helped AND who is burdened. Hidden impacts → REVISE.</p>
+          <p class="feedback">Who is helped and who is burdened.</p>
           <label class="override advanced-only">
             <input type="checkbox" data-override="Impact"> Override to REVISE
           </label>
-          <input type="text" class="note advanced-only" data-note="Impact" placeholder="Override note (recorded in lineage)" disabled>
+          <input type="text" class="note advanced-only" data-note="Impact" placeholder="Override note (recorded in the result)" disabled>
         </div>
       </li>
       <li class="gate pending" data-gate="Integrity">
@@ -141,11 +135,11 @@
         <div class="body">
           <div class="title"><span class="n">4</span> Integrity</div>
           <p class="state">waiting</p>
-          <p class="feedback">Stay consistent with stated values. Contradictions → REVISE or BLOCK.</p>
+          <p class="feedback">Stay consistent with the values you named.</p>
           <label class="override advanced-only">
             <input type="checkbox" data-override="Integrity"> Override to REVISE
           </label>
-          <input type="text" class="note advanced-only" data-note="Integrity" placeholder="Override note (recorded in lineage)" disabled>
+          <input type="text" class="note advanced-only" data-note="Integrity" placeholder="Override note (recorded in the result)" disabled>
         </div>
       </li>
       <li class="gate pending" data-gate="Responsibility">
@@ -153,100 +147,30 @@
         <div class="body">
           <div class="title"><span class="n">5</span> Responsibility</div>
           <p class="state">waiting</p>
-          <p class="feedback">Name one owner. No name → BLOCK.</p>
+          <p class="feedback">Name one owner.</p>
           <label class="override advanced-only">
             <input type="checkbox" data-override="Responsibility"> Override to REVISE
           </label>
-          <input type="text" class="note advanced-only" data-note="Responsibility" placeholder="Override note (recorded in lineage)" disabled>
+          <input type="text" class="note advanced-only" data-note="Responsibility" placeholder="Override note (recorded in the result)" disabled>
         </div>
       </li>
     </ol>
   </section>
 
-  <div id="banner" class="banner idle" role="status">
-    No run yet. Type a plan. Tap Run. First failure stops the chain.
-  </div>
-  <p id="kid-plain" class="kid">Three taps: Import file, Run, Export file. Verify checks the program in plain words. This is not advice.</p>
+  <div id="banner" class="banner idle" role="status">Type a plan, then run the check.</div>
+  <p id="kid-plain" class="kid">The result shows up on the five gates.</p>
 
-  <section id="advanced-panel" class="advanced-panel advanced-only" hidden>
-    <h2>JSON</h2>
-    <pre id="rows-pre">{}</pre>
-  </section>
+  <details class="notes">
+    <summary>About</summary>
+    <p class="motto">Freedom without clarity is chaos. Clarity without force is wisdom.</p>
+    <p>THIS IS: a five-gate ethical pre-execution filter (PASS / REVISE / BLOCK). The gates are Definition, Evidence, Impact, Integrity, and Responsibility. The first one that does not pass stops the chain. PASS means the plan was clear enough to inspect.</p>
+    <p>THIS IS NOT: a predictor, a court, a truth score, advice, or a remote command runner. wrap is not hosted.</p>
+    <p>Author Aziel Eliab. Apache-2.0. July 2026. This screen stays on this computer (127.0.0.1). DOI 10.5281/zenodo.21435730. Forks welcome and always allowed.</p>
+  </details>
 
-  
-<section class="card" id="aziel-json-io">
-  <h2>Import / Export JSON</h2>
-  <p class="help">Tap Import JSON file to pick a .json. Export JSON saves the current session locally. Nothing is uploaded.</p>
-  <input id="aziel-import-json" type="file" accept="application/json,.json">
-  <p>
-    <button type="button" id="aziel-import-json-btn">Import JSON file</button>
-    <button type="button" id="aziel-export-json-btn">Export JSON</button>
-  </p>
-  <p class="help" id="aziel-json-status"></p>
-</section>
-
-<footer>
-    <p>Apache-2.0 · Aziel Eliab · July 2026 · Bound to 127.0.0.1 · Forks welcome and always allowed.</p>
-    <p class="foot-note">This UI does not advise, predict, or prescribe. It filters. DOI 10.5281/zenodo.21435730</p>
+  <footer>
+    <p>Aziel Eliab · Apache-2.0 · This computer only</p>
   </footer>
   <script src="/app.js"></script>
-
-<script>
-(function(){
-  var file = document.getElementById("aziel-import-json");
-  var imp = document.getElementById("aziel-import-json-btn");
-  var exp = document.getElementById("aziel-export-json-btn");
-  var status = document.getElementById("aziel-json-status");
-  if (!file || !imp || !exp) return;
-  function say(m){ if (status) status.textContent = m; }
-  function collect(){
-    var data = { product: document.title || "", exported_at: new Date().toISOString(), author: "Aziel Eliab" };
-    document.querySelectorAll("input, select, textarea").forEach(function(el){
-      if (!el.id || el.type === "file" || el.type === "password") return;
-      data[el.id] = el.type === "checkbox" ? el.checked : el.value;
-    });
-    if (window.__azielLastJson && typeof window.__azielLastJson === "object") {
-      data.last = window.__azielLastJson;
-    }
-    return data;
-  }
-  function apply(obj){
-    if (!obj || typeof obj !== "object") return;
-    window.__azielLastJson = obj;
-    Object.keys(obj).forEach(function(k){
-      if (k === "last" || k === "product" || k === "exported_at" || k === "author") return;
-      var el = document.getElementById(k);
-      if (!el || el.type === "file" || el.type === "password") return;
-      if (el.type === "checkbox") el.checked = !!obj[k];
-      else if ("value" in el) el.value = obj[k];
-    });
-    var ta = document.querySelector("textarea");
-    if (ta && obj && !obj[ta.id] && typeof obj === "object") {
-      try { if (!ta.value) ta.value = JSON.stringify(obj, null, 2); } catch (e) {}
-    }
-  }
-  imp.addEventListener("click", function(){ file.click(); });
-  file.addEventListener("change", function(){
-    var f = file.files && file.files[0];
-    if (!f) return;
-    var r = new FileReader();
-    r.onload = function(){
-      try { apply(JSON.parse(String(r.result || "{}"))); say("Imported " + f.name); }
-      catch (e) { say("Invalid JSON"); }
-    };
-    r.readAsText(f);
-  });
-  exp.addEventListener("click", function(){
-    var blob = new Blob([JSON.stringify(collect(), null, 2)], {type: "application/json"});
-    var a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "session.json";
-    a.click();
-    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 800);
-    say("Exported JSON");
-  });
-})();
-</script>
-
 </body>
 </html>

@@ -30,6 +30,16 @@ def _web_bytes(name: str) -> bytes:
     return (WEB / name).read_bytes()
 
 
+def _wants_json(accept: str | None) -> bool:
+    """True when the client asked for JSON ahead of HTML."""
+    header = accept or ""
+    json_at = header.find("application/json")
+    if json_at < 0:
+        return False
+    html_at = header.find("text/html")
+    return html_at < 0 or json_at < html_at
+
+
 class Handler(BaseHTTPRequestHandler):
     server_version = "DecisionGATE/0.1.0"
 
@@ -51,6 +61,16 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:  # noqa: N802
         path = urlparse(self.path).path
         if path in {"/", "/index.html"}:
+            if path == "/" and _wants_json(self.headers.get("Accept")):
+                self._json(200, {
+                    "ok": True,
+                    "product": "decisiongate",
+                    "version": __version__,
+                    "author": __author__,
+                    "ui": "http://127.0.0.1:8791/",
+                    "loopback": True,
+                })
+                return
             self._send(200, _web_bytes("index.html"), MIME[".html"])
             return
         if path == "/style.css":
@@ -111,10 +131,7 @@ def make_server(host: str = "127.0.0.1", port: int = 8791) -> ThreadingHTTPServe
 def serve(host: str = "127.0.0.1", port: int = 8791) -> None:
     httpd = make_server(host, port)
     bound_host, bound_port = httpd.server_address[:2]
-    print(
-        f"DecisionGATE UI http://{bound_host}:{bound_port} "
-        "(loopback only; pre-execution filter, not advice)"
-    )
+    print(f"Open http://{bound_host}:{bound_port}/")
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:

@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "decisiongate"
 version = "0.1.0"
-description = "DecisionGATE: a lightweight ethical pre-execution filter. Not predictive, advisory, or prescriptive."
+description = "DecisionGATE checks a plan through five gates before you act."
 readme = "README.md"
 license = {file = "LICENSE"}
 authors = [{name = "Aziel Eliab"}]
