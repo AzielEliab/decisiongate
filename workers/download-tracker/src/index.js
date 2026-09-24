@@ -389,11 +389,11 @@ async function indexHtml(env) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DecisionGATE — Aziel Eliab</title>
-<meta name="description" content="Five-gate ethical pre-execution filter (PASS / REVISE / BLOCK) by Aziel Eliab; not a predictor or command runner.">
+<meta name="description" content="Five-gate ethical pre-execution filter (PASS / REVISE / BLOCK) by Aziel Eliab.">
 <meta name="author" content="Aziel Eliab">
 <link rel="canonical" href="https://decisiongate-download-tracker.vibelock.workers.dev/">
 <meta property="og:title" content="DecisionGATE — Aziel Eliab">
-<meta property="og:description" content="Five-gate ethical pre-execution filter (PASS / REVISE / BLOCK) by Aziel Eliab; not a predictor or command runner.">
+<meta property="og:description" content="Five-gate ethical pre-execution filter (PASS / REVISE / BLOCK) by Aziel Eliab.">
 <meta property="og:url" content="https://decisiongate-download-tracker.vibelock.workers.dev/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://decisiongate-download-tracker.vibelock.workers.dev/sigil.png">
@@ -412,60 +412,144 @@ async function indexHtml(env) {
   "downloadUrl": "https://decisiongate-download-tracker.vibelock.workers.dev/download",
   "license": "https://www.apache.org/licenses/LICENSE-2.0",
   "url": "https://decisiongate-download-tracker.vibelock.workers.dev/",
-  "description": "Five-gate ethical pre-execution filter (PASS / REVISE / BLOCK) by Aziel Eliab; not a predictor or command runner.",
+  "description": "Five-gate ethical pre-execution filter (PASS / REVISE / BLOCK) by Aziel Eliab.",
   "identifier": "https://doi.org/10.5281/zenodo.21435730"
 }
 </script>
 <!-- gitbaby-seo -->
 <style>
-  :root { color-scheme: dark; }
-  body { font: 16px/1.45 system-ui, sans-serif; max-width: 42rem; margin: 3rem auto; padding: 0 1.25rem 4rem; background: #0e1014; color: #e8eaef; }
-  .brandrow { display: flex; align-items: center; margin: 0 0 1rem; min-height: 48px; }
-  .brandmark { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; flex: 0 0 40px; box-shadow: 0 0 0 1px #0003, 0 0 0 1px #c9a227; }
-  h1 { font-size: 1.75rem; margin: 0 0 .35rem; }
-  .motto { color: #9aa3b2; margin: 0 0 1.5rem; }
-  .card { border: 1px solid #2a3140; border-radius: 12px; padding: 1.25rem 1.35rem; background: #151922; }
+  :root {
+    color-scheme: light;
+    --bg: #f4f1ea;
+    --panel: #fffdf8;
+    --ink: #1b1814;
+    --muted: #4e473d;
+    --line: #d8d0c3;
+    --gold: #6a4f12;
+    --btn-bg: #1b1814;
+    --btn-ink: #f7f4ee;
+    --focus: #1b1814;
+    --code: #efe8dc;
+    --ok: #0d6b3a;
+    --ok-ink: #f7f4ee;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --bg: #0e1014;
+      --panel: #161b22;
+      --ink: #f3f5f8;
+      --muted: #c5ced8;
+      --line: #313a48;
+      --gold: #f0d48a;
+      --btn-bg: #f4f1ea;
+      --btn-ink: #16140f;
+      --focus: #ffffff;
+      --code: #0c0e12;
+      --ok: #0d6b3a;
+      --ok-ink: #f7f4ee;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); }
+  body { font: 16px/1.5 system-ui, "Segoe UI", sans-serif; overflow-wrap: break-word; }
+  .wrap { width: min(42rem, 100%); margin: 0 auto; padding: 1.15rem 1rem 2.5rem; }
+  a.skip { position: absolute; left: -999px; top: 0; }
+  a.skip:focus { left: 1rem; top: 1rem; z-index: 5; background: var(--btn-bg); color: var(--btn-ink); padding: .4rem .7rem; text-decoration: none; }
+  a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+  .brandrow { display: flex; align-items: center; margin: 0 0 .75rem; min-height: 48px; }
+  .brandmark { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; flex: 0 0 40px; box-shadow: 0 0 0 1px var(--line); }
+  h1 { font-size: 2rem; font-weight: 650; letter-spacing: .02em; line-height: 1.15; margin: 0 0 .25rem; }
+  .motto { color: var(--gold); font-style: italic; margin: 0 0 .7rem; font-size: 1.05rem; }
+  .lede { color: var(--muted); margin: 0 0 1rem; max-width: 40rem; }
+  a.btn.block.primary {
+    display: block; width: 100%; margin: 0 0 .65rem; padding: 1.05rem 1.2rem;
+    border: 1px solid transparent; border-radius: 10px; background: var(--btn-bg); color: var(--btn-ink);
+    text-align: center; text-decoration: none;
+    font: 700 1.25rem/1.1 ui-monospace, Menlo, Consolas, monospace; letter-spacing: .03em;
+  }
+  a.btn.block.primary:hover { filter: brightness(1.08); }
+  .asset-note { color: var(--muted); font-size: .95rem; margin: 0 0 1rem; }
+  .features { display: grid; grid-template-columns: 1fr; gap: .55rem .9rem; margin: 0; padding: 0; list-style: none; }
+  .features li { margin: 0; padding-left: .85rem; position: relative; }
+  .features li::before { content: ""; position: absolute; left: 0; top: .55em; width: .4rem; height: .4rem; border-radius: 50%; background: var(--gold); }
+  .card { border: 1px solid var(--line); border-radius: 12px; padding: 1.1rem 1rem 1.2rem; background: var(--panel); margin: 1.15rem 0; }
   .nums { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; margin: 0 0 1rem; }
-  .count { font-size: 2.2rem; font-variant-numeric: tabular-nums; font-weight: 700; margin: 0; }
-  .count span { display: block; font-size: .95rem; font-weight: 500; color: #9aa3b2; }
-  .btns { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin: 0 0 .85rem; }
-  @media (max-width: 520px) { .btns { grid-template-columns: 1fr; } }
-  a.btn, button.btn { display: block; width: 100%; box-sizing: border-box; text-align: center; font: inherit; font-size: 1.2rem; font-weight: 750; padding: 1rem 1.1rem; border-radius: 10px; border: 0; cursor: pointer; text-decoration: none; }
-  a.btn.primary { background: #e8eaef; color: #0e1014; }
-  button.btn.install { background: #c9a227; color: #14110a; }
-  button.btn.install.copied { background: #7dcf9a; color: #0e1014; }
-  .kid { font-size: 1.05rem; margin: 0 0 1rem; }
-  .meta { margin-top: 1.1rem; color: #9aa3b2; font-size: .92rem; }
-  .meta a { color: #c9d4ff; }
-  .iso { margin-top: .85rem; font-size: .85rem; color: #7d8696; }
-  .banner { border: 1px solid #5c4a1a; background: #241c0d; color: #f0d78c; padding: .85rem 1rem; border-radius: 8px; margin: 0 0 1.2rem; font-size: .92rem; }
-  pre { background: #0e1014; padding: .75rem .9rem; overflow: auto; border-radius: 8px; font-size: .82rem; }
-  code { font-size: .88rem; }
-
-  .cite { margin-top: 1.4rem; padding-top: 1rem; border-top: 1px solid #2a3140; }
-  .cite h2 { font-size: 1.05rem; margin: 0 0 .4rem; }
-  .cite p { color: #c5ccd8; font-size: .95rem; }
-  .cite a { color: #c9d4ff; }
-  #meshStrip { border: 1px solid #c9a227; border-radius: 12px; padding: .85rem 1rem; background: #151922; margin: 0 0 1.2rem; display: flex; flex-wrap: wrap; align-items: center; gap: .7rem 1rem; font-size: .88rem; color: #9aa3b2; }
-  #meshStrip .live { color: #e8eaef; }
-  #meshStrip .live b { color: #c9a227; font-size: 1.35rem; margin-right: .35rem; }
-  #meshStrip .rollup b { color: #c9a227; }
-  #meshStrip button { font: 700 .78rem/1 ui-monospace, Menlo, Consolas, monospace; height: 2rem; padding: 0 .75rem; border-radius: 8px; background: #101010; color: #e8eaef; border: 1px solid #c9a227; cursor: pointer; }
-  #meshStrip button:hover { background: #241c0d; color: #c9a227; }
-  #meshStrip input { width: 10rem; padding: .4rem .55rem; border: 1px solid #c9a227; border-radius: 8px; background: #0e0e0e; color: #e8eaef; font: inherit; }
-  #meshProducts { flex-basis: 100%; margin: 0; }
+  .count { font-size: 2rem; font-variant-numeric: tabular-nums; font-weight: 700; margin: 0; }
+  .count span { display: block; font-size: .95rem; font-weight: 500; color: var(--muted); }
+  .kid { font-size: 1.02rem; margin: 0 0 .85rem; }
+  button.btn.install {
+    display: inline-block; width: auto; max-width: 100%; margin: 0 0 .75rem;
+    background: transparent; color: var(--ink); border: 1px solid var(--line); border-radius: 9px;
+    font: 700 .9rem/1.1 ui-monospace, Menlo, Consolas, monospace; letter-spacing: .03em;
+    padding: .7rem .95rem; cursor: pointer;
+  }
+  button.btn.install.copied { background: var(--ok); color: var(--ok-ink); border-color: var(--ok); }
+  pre { background: var(--code); color: var(--ink); padding: .75rem .9rem; border-radius: 8px; font-size: .82rem; max-width: 100%; overflow-x: auto; white-space: pre-wrap; overflow-wrap: anywhere; margin: 0 0 .85rem; }
+  code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .92em; }
+  .meta, .iso { margin: .85rem 0 0; color: var(--muted); font-size: .92rem; }
+  .meta a, footer a { color: var(--ink); }
+  #meshStrip { border: 1px solid var(--gold); border-radius: 12px; padding: .85rem 1rem; background: var(--panel); margin: 0 0 1.15rem; display: flex; flex-wrap: wrap; align-items: center; gap: .7rem 1rem; font-size: .88rem; color: var(--muted); max-width: 100%; }
+  #meshStrip .live { color: var(--ink); }
+  #meshStrip .live b, #meshStrip .rollup b { color: var(--gold); }
+  #meshStrip .live b { font-size: 1.35rem; margin-right: .35rem; }
+  #meshStrip .mesh-actions { display: flex; flex-wrap: wrap; gap: .45rem; width: 100%; max-width: 100%; }
+  #meshStrip button { font: 700 .78rem/1 ui-monospace, Menlo, Consolas, monospace; min-height: 2rem; padding: 0 .75rem; border-radius: 8px; background: var(--code); color: var(--ink); border: 1px solid var(--gold); cursor: pointer; }
+  #meshStrip button:hover { color: var(--gold); }
+  #meshStrip input { width: min(12rem, 100%); max-width: 100%; padding: .4rem .55rem; border: 1px solid var(--gold); border-radius: 8px; background: var(--code); color: var(--ink); font: inherit; }
+  #meshProducts { flex-basis: 100%; margin: 0; overflow-wrap: anywhere; }
+  footer.quiet { color: var(--muted); font-size: .9rem; padding-top: .35rem; }
+  footer.quiet p { margin: .35rem 0; }
+  @media (min-width: 720px) {
+    .wrap { padding: 1.6rem 1.25rem 3rem; }
+    .features { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .card { padding: 1.2rem 1.25rem 1.3rem; }
+  }
 </style>
 <body>
-  <div class="brandrow"><img class="brandmark" src="/sigil.png" width="40" height="40" alt="" decoding="async"></div>
-  <h1>DecisionGATE</h1>
-  <p class="motto">Freedom without clarity is chaos. Clarity without force is wisdom. Author Aziel Eliab.</p>
-  <p class="banner">THIS IS: a five-gate ethical pre-execution filter (PASS / REVISE / BLOCK). THIS IS NOT: a predictor, a court, a truth score, advice, or a remote command runner. wrap is not hosted. Author Aziel Eliab.</p>
+<a class="skip" href="#downloadBtn">Skip to download</a>
+<div class="wrap">
+  <header class="hero">
+    <div class="brandrow"><img class="brandmark" src="/sigil.png" width="40" height="40" alt="" decoding="async"></div>
+    <h1>DecisionGATE</h1>
+    <p class="motto">Freedom without clarity is chaos. Clarity without force is wisdom.</p>
+    <p class="lede">A five-gate ethical pre-execution filter. PASS, REVISE, or BLOCK. Author Aziel Eliab.</p>
+    <a class="btn block primary" id="downloadBtn" href="/download?asset=${DEFAULT_ASSET}" aria-describedby="downloadNote">Download</a>
+    <p class="asset-note" id="downloadNote">${n} downloads · ${DEFAULT_ASSET} · counted on this Worker for every branch and fork</p>
+    <ul class="features">
+      <li>Definition, Evidence, Impact, Integrity, and Responsibility, in that order</li>
+      <li>The first gate that does not pass stops the chain</li>
+      <li>One tarball. After install, <code>decisiongate ui</code> listens on this computer only</li>
+    </ul>
+  </header>
+  <main>
+  <div class="card">
+    <div class="nums">
+      <p class="count">${v}<span>Views</span></p>
+      <p class="count">${n}<span>Downloads</span></p>
+    </div>
+    <p class="kid"><strong>Three steps.</strong> 1. Tap Download. 2. After install, type <code>decisiongate ui</code>. 3. Type a plan and tap Run. Green means the five gates passed scrutiny.</p>
+    <button type="button" class="btn install" id="install-btn">One-click install</button>
+    <pre id="install-cmd">${INSTALL_LINE}</pre>
+    <p class="kid">Then open http://127.0.0.1:8791 (this computer only). Import file and Export file both exist. Verify speaks in plain words.</p>
+    <p class="meta">The download count ticks on the Download click. The Worker serves the gzip (HTTP 200). No 302 to GitHub. Forks using this same link are counted automatically. ${DEFAULT_ASSET} — ${n} counted.</p>
+    <p class="iso">Isolated counter: Worker <code>decisiongate-download-tracker</code>, project <code>${PROJECT}</code>, KV <code>DECISIONGATE_DOWNLOADS</code>. Not mixed with any other product. /v1 does not increment downloads.</p>
+    <p class="meta">GitHub: stars ${gh.stars || 0} · forks ${gh.forks || 0} · watchers ${gh.watchers || 0} · release assets ${gh.release_download_count || 0}</p>
+    <p class="meta">Paper: <a href="${DOI}">doi:10.5281/zenodo.21435730</a> · <a href="${ZENODO}">Zenodo</a> · Apache-2.0 · Eliab, Aziel</p>
+    <p class="meta"><a href="/count">JSON count</a> · <a href="/stats">JSON stats</a> · <a href="/openapi.json">OpenAPI</a> · <a href="/v1/mesh">/v1/mesh</a> · <a href="/v1/skill">Skill</a> · <a href="/ai">AI runtime</a> · <a href="${GITHUB_REPO}">GitHub</a> · <a href="${GITHUB_LATEST}">releases</a></p>
+    <details class="iso"><summary>Per repo / branch / fork</summary>
+    <ul>${breakdown}</ul>
+    </details>
+  </div>
   <div id="meshStrip" aria-label="Suite Live Nodes">
     <div class="live"><b id="meshLiveCount">0</b> Live Nodes</div>
     <div id="meshLine">Suite mesh: off (default). QNM-BUILD-1.0. QNS-CD-1.0. Not an anonymity network.</div>
     <div class="rollup">live <b id="qnmLive">0</b> · locked <b id="qnmLocked">0</b> · isolated <b id="qnmIsolated">0</b></div>
     <div>No Node Gate · No auto-heal · Aziel Eliab only</div>
-    <div>
+    <div class="mesh-actions">
       <input id="meshBearer" type="text" maxlength="80" placeholder="bearer (required to enable)" aria-label="mesh bearer">
       <button id="meshEnable" type="button" title="Enable suite mesh. Declared bearer required. Default off.">Enable</button>
       <button id="meshDisable" type="button" title="Disable suite mesh (always allowed)">Disable</button>
@@ -474,23 +558,6 @@ async function indexHtml(env) {
     </div>
     <p id="meshProducts">Catalog MCP mesh_* · FragGate slug=mesh · /v1/mesh/* PROXY · QNS-CD-1.0 hub cite · not AnonBroadcast · not AZMail ring · not a Node Gate · no public qnsd proxy</p>
   </div>
-  <div class="card">
-    <div class="nums">
-      <p class="count">${v}<span>Views</span></p>
-      <p class="count">${n}<span>Downloads</span></p>
-    </div>
-    <p class="kid"><strong>Three steps.</strong> 1. Tap Download. 2. After install, type <code>decisiongate ui</code>. 3. Type a plan and tap Run. Green is a check, not a command.</p>
-    <div class="btns">
-      <a class="btn primary dl" href="/download?asset=${DEFAULT_ASSET}">Download</a>
-      <button type="button" class="btn install" id="install-btn">One-click install</button>
-    </div>
-    <pre id="install-cmd">${INSTALL_LINE}</pre>
-    <p class="kid">Then open http://127.0.0.1:8791 (this computer only). Import file and Export file both exist. Verify speaks in plain words.</p>
-    <p class="meta">The download count ticks on the Download click. The Worker serves the gzip (HTTP 200). No 302 to GitHub. Forks using this same link are counted automatically. ${DEFAULT_ASSET} — ${n} counted.</p>
-    <p class="iso">Isolated counter: Worker <code>decisiongate-download-tracker</code>, project <code>${PROJECT}</code>, KV <code>DECISIONGATE_DOWNLOADS</code>. Not mixed with any other product. /v1 does not increment downloads.</p>
-    <p class="meta">GitHub: stars ${gh.stars || 0} · forks ${gh.forks || 0} · watchers ${gh.watchers || 0} · release assets ${gh.release_download_count || 0}</p>
-    <p class="meta">Paper: <a href="${DOI}">doi:10.5281/zenodo.21435730</a> · <a href="${ZENODO}">Zenodo</a> · Apache-2.0 · Eliab, Aziel</p>
-    <p class="meta"><a href="/count">JSON count</a> · <a href="/stats">JSON stats</a> · <a href="/openapi.json">OpenAPI</a> · <a href="/v1/mesh">/v1/mesh</a> · <a href="/v1/skill">Skill</a> · <a href="/ai">AI runtime</a> · <a href="${GITHUB_REPO}">GitHub</a> · <a href="${GITHUB_LATEST}">releases</a></p>
     <script>
       (function () {
         var cmd = "curl -fsSL https://decisiongate-download-tracker.vibelock.workers.dev/install.sh | bash";
@@ -617,16 +684,13 @@ async function indexHtml(env) {
         document.addEventListener("visibilitychange", function () { if (!document.hidden) refreshMesh(); });
       })();
     </script>
-    <details class="iso"><summary>Per repo / branch / fork</summary>
-    <ul>${breakdown}</ul>
-    </details>
-  </div>
-
-<section class="cite" id="cite">
-  <h2>How to cite</h2>
-  <p>Aziel Eliab. DecisionGATE. https://github.com/AzielEliab/decisiongate. https://decisiongate-download-tracker.vibelock.workers.dev. https://doi.org/10.5281/zenodo.21435730.</p>
-  <p><a href="https://aziel-runtime.vibelock.workers.dev/">Catalog</a> · <a href="https://github.com/AzielEliab/decisiongate">GitHub</a> · <a href="https://decisiongate-download-tracker.vibelock.workers.dev/download">Download</a> · <a href="https://decisiongate-download-tracker.vibelock.workers.dev/cite.json">cite.json</a></p>
-</section>
+  </main>
+<footer class="quiet">
+  <p>Apache-2.0 · Aziel Eliab · DecisionGATE 0.1.0</p>
+  <p>Aziel Eliab. DecisionGATE. <a href="${GITHUB_REPO}">GitHub</a> · <a href="${DOI}">doi:10.5281/zenodo.21435730</a> · <a href="${ZENODO}">Zenodo</a></p>
+  <p><a href="https://aziel-runtime.vibelock.workers.dev/">Catalog</a> · <a href="/openapi.json">OpenAPI</a> · <a href="/v1/skill">Skill</a> · <a href="/cite.json">Cite</a></p>
+</footer>
+</div>
 <!-- /gitbaby-seo -->
 </body>
 </html>`;
