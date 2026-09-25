@@ -155,6 +155,5 @@ def run_doctor(*, as_json: bool = False) -> int:
     else:
         for line in payload["plain"]:
             print(line)
-        print("limitation:", LIMITATION)
         print("doctor", "passed" if payload["ok"] else "failed")
     return 0 if payload["ok"] else 1

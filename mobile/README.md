@@ -1,8 +1,8 @@
 # DecisionGATE — iPhone & Android
 
 Local-first Flutter client for DecisionGATE. Five-gate form,
-sequential PASS / REVISE / BLOCK, motto on screen. Offline. No
-analytics. Not predictive, advisory, or prescriptive.
+one **Run check** button, constraints under Advanced. Offline. No
+analytics. Light and dark follow the system.
 
 Application id: `com.azieeliab.decisiongate`
 

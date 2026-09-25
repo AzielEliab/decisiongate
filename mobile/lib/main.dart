@@ -16,7 +16,9 @@ class DecisionGateApp extends StatelessWidget {
     return MaterialApp(
       title: 'DecisionGATE',
       debugShowCheckedModeBanner: false,
-      theme: buildAppTheme(),
+      theme: buildAppTheme(brightness: Brightness.light),
+      darkTheme: buildAppTheme(brightness: Brightness.dark),
+      themeMode: ThemeMode.system,
       home: const FormPage(),
     );
   }
@@ -83,9 +85,8 @@ class _FormPageState extends State<FormPage> {
           ),
           const SizedBox(height: 8),
           const Text(
-            'Five sequential gates. First failure stops the chain. '
-            'PASS is clearance that the proposal survived scrutiny, not a '
-            'suggestion to act. Offline. No analytics.',
+            'Five gates look at one plan and stop at the first that does not pass. '
+            'Offline. No analytics.',
           ),
           const SizedBox(height: 16),
           TextField(
@@ -127,11 +128,17 @@ class _FormPageState extends State<FormPage> {
             ),
           ),
           const SizedBox(height: 12),
-          TextField(
-            controller: _constraints,
-            decoration: const InputDecoration(
-              labelText: '4b. Constraints (optional prohibitions)',
-            ),
+          ExpansionTile(
+            title: const Text('Advanced'),
+            children: [
+              TextField(
+                controller: _constraints,
+                decoration: const InputDecoration(
+                  labelText: 'Constraints (optional hard bounds)',
+                ),
+              ),
+              const SizedBox(height: 12),
+            ],
           ),
           const SizedBox(height: 12),
           TextField(
@@ -143,7 +150,7 @@ class _FormPageState extends State<FormPage> {
           const SizedBox(height: 20),
           FilledButton(
             onPressed: _run,
-            child: const Text('Run gates'),
+            child: const Text('Run check'),
           ),
         ],
       ),

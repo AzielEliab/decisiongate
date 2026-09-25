@@ -33,9 +33,11 @@ def test_ui_get_root_200_contains_decisiongate() -> None:
         assert "Import file" in html
         assert "Export file" in html
         assert "Verify" in html
+        assert "Run check" in html
+        assert "Advanced" in html
         assert "THIS IS" in html
         assert "THIS IS NOT" in html
-        assert "Simple" in html
+        assert html.index("Run check") < html.index("THIS IS NOT")
         assert "cdnjs" not in html.lower()
         assert "unpkg" not in html.lower()
         with urllib.request.urlopen(f"http://127.0.0.1:{port}/api/verify", timeout=3) as resp:
@@ -43,9 +45,21 @@ def test_ui_get_root_200_contains_decisiongate() -> None:
         assert doctor["ok"] is True
         assert doctor["author"] == "Aziel Eliab"
         assert any("Aziel Eliab" in x for x in doctor["plain"])
+        req_json = urllib.request.Request(
+            f"http://127.0.0.1:{port}/",
+            headers={"Accept": "application/json"},
+        )
+        with urllib.request.urlopen(req_json, timeout=3) as resp:
+            home = json.loads(resp.read().decode("utf-8"))
+        assert home["product"] == "decisiongate"
+        assert home["author"] == "Aziel Eliab"
+        assert home["ok"] is True
         with urllib.request.urlopen(f"http://127.0.0.1:{port}/style.css", timeout=3) as resp:
             css = resp.read().decode("utf-8")
         assert "PASS" in css or "--pass" in css
+        assert "prefers-color-scheme" in css
+        assert ":focus-visible" in css
+        assert "#c9a227" in css
         req = urllib.request.Request(
             f"http://127.0.0.1:{port}/api/check",
             data=json.dumps(
